@@ -447,10 +447,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnim: {fileID: 957568167}
   playerRigid: {fileID: 957568166}
-  walkSpeed: 30
+  walkSpeed: 40
   walkbackSpeed: 30
   olw_speed: 30
-  runSpeed: 50
+  runSpeed: 60
   rotationSpeed: 180
   walking: 0
   playerTrans: {fileID: 957568164}
