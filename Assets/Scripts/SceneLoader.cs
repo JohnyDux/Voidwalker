@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,8 @@ public class SceneLoader : MonoBehaviour
 
     public void QuitGame()
     {
+        //Stop in both the Editor and in the Build
+        EditorApplication.isPlaying = false;
         Application.Quit();
     }
 }
