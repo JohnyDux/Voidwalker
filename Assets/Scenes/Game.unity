@@ -644,16 +644,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpForce: 10
-  referenceCamera: {fileID: 963194227}
-  playerMesh: {fileID: 2040279758}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundCheck: {fileID: 558479719}
-  groundCheckRadius: 0.1
-  rb: {fileID: 544359830}
-  isGrounded: 0
+  rotationSmoothTime: 0.1
+  gravity: 9.8
+  gravityMultiplier: 2
+  groundedGravity: -0.5
+  jumpHeight: 3
+  cam: {fileID: 853428522}
 --- !u!54 &544359830
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -6,105 +6,70 @@ using Cinemachine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed;
-    public float jumpForce;
-    public Camera referenceCamera;
-    public GameObject playerMesh;
+    [Header("Movement")]
+    [SerializeField] float speed;
+    [SerializeField] float rotationSmoothTime;
 
-    //Jump
-    public LayerMask groundLayer;
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
+    [Header("Gravity")]
+    [SerializeField] float gravity = 9.8f;
+    [SerializeField] float gravityMultiplier = 2;
+    [SerializeField] float groundedGravity = -0.5f;
+    [SerializeField] float jumpHeight = 3f;
+    float velocityY;
 
-    private Vector3 direction = Vector3.zero;
-    public Rigidbody rb;
-    public bool isGrounded;
+    CharacterController controller;
+    public CinemachineVirtualCamera cam;
 
-    void Start()
+    float currentAngle;
+    float currentAngleVelocity;
+
+    private void Awake()
     {
+        //getting reference for components on the Player
+        controller = GetComponent<CharacterController>();
+
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
     {
-        CheckGroundStatus();
+        HandleMovement();
+        HandleGravityAndJump();
+    }
 
-        if (referenceCamera == null)
-        {
-            Debug.LogError("Reference Camera not assigned.");
-            return;
-        }
-        if (isGrounded == true) { 
+    private void HandleMovement()
+    {
+        //capturing Input from Player
+        Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
-            Vector3 direction = Vector3.zero;
+        if (movement.magnitude >= 0.1f)
+        {
+            //compute rotation
+            float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+            currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
+            transform.rotation = Quaternion.Euler(0, currentAngle, 0);
 
-            if (Input.GetKey(KeyCode.W))
-        {
-            direction += referenceCamera.transform.forward;
-        }
-            if (Input.GetKey(KeyCode.S))
-        {
-            direction -= referenceCamera.transform.forward;
-        }
-            if (Input.GetKey(KeyCode.A))
-        {
-            MoveLeft(ref direction);
-        }
-            if (Input.GetKey(KeyCode.D))
-        {
-            MoveRight(ref direction);
-        }
-
-            direction.y = 0; // Keep movement in the horizontal plane
-
-            if (direction != Vector3.zero)
-        {
-            direction.Normalize();
-            // Move the character in the calculated direction
-            transform.position += direction * speed * Time.deltaTime;
-            // Rotate the mesh towards the movement direction
-            RotateMeshTowardsDirection(direction);
-        }
-            rb.isKinematic = true;
-        }
-        if (Input.GetKey(KeyCode.Space) && isGrounded == true)
-        {
-            rb.isKinematic = false;
-            Jump();
+            //move in direction of rotation
+            Vector3 rotatedMovement = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+            controller.Move(rotatedMovement * speed * Time.deltaTime);
         }
     }
 
-    void MoveLeft(ref Vector3 direction)
+    void HandleGravityAndJump()
     {
-        direction -= referenceCamera.transform.right;
-    }
+        //apply groundedGravity when the Player is Grounded
+        if (controller.isGrounded && velocityY < 0f)
+            velocityY = groundedGravity;
 
-    void MoveRight(ref Vector3 direction)
-    {
-        direction += referenceCamera.transform.right;
-    }
+        //When Grounded and Jump Button is Pressed, set veloctiyY with the formula below
+        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            velocityY = Mathf.Sqrt(jumpHeight * 2f * gravity);
+        }
 
-    void RotateMeshTowardsDirection(Vector3 direction)
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        playerMesh.transform.rotation = Quaternion.Slerp(playerMesh.transform.rotation, targetRotation, Time.deltaTime * speed);
-    }
-
-    void Jump()
-    {
-        rb.velocity = new Vector3(0, jumpForce, 0);
-    }
-
-    void CheckGroundStatus()
-    {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer, QueryTriggerInteraction.Ignore);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck == null) return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        //applying gravity when Player is not grounded
+        velocityY -= gravity * gravityMultiplier * Time.deltaTime;
+        controller.Move(Vector3.up * velocityY * Time.deltaTime);
     }
 }
