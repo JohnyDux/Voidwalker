@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
     }
 
     void Update()
