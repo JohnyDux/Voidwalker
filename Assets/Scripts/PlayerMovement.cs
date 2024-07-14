@@ -1,79 +1,111 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float jumpPower = 7f;
-    public float gravity = 10f;
-    public float lookSpeed = 2f;
-    public float lookXLimit = 45f;
-    public float defaultHeight = 2f;
-    public float crouchHeight = 1f;
-    public float crouchSpeed = 3f;
+    public float speed;
+    public float jumpForce;
+    public Camera referenceCamera;
+    public GameObject playerMesh;
 
-    private Vector3 moveDirection = Vector3.zero;
-    private float rotationX = 0;
-    private CharacterController characterController;
+    //Jump
+    public LayerMask groundLayer;
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
 
-    private bool canMove = true;
+    private Vector3 direction = Vector3.zero;
+    public Rigidbody rb;
+    public bool isGrounded;
 
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+        CheckGroundStatus();
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (referenceCamera == null)
         {
-            moveDirection.y = jumpPower;
+            Debug.LogError("Reference Camera not assigned.");
+            return;
         }
-        else
-        {
-            moveDirection.y = movementDirectionY;
-        }
+        if (isGrounded == true) { 
 
-        if (!characterController.isGrounded)
-        {
-            moveDirection.y -= gravity * Time.deltaTime;
-        }
+            Vector3 direction = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.R) && canMove)
+            if (Input.GetKey(KeyCode.W))
         {
-            characterController.height = crouchHeight;
-            walkSpeed = crouchSpeed;
-            runSpeed = crouchSpeed;
-
+            direction += referenceCamera.transform.forward;
         }
-        else
+            if (Input.GetKey(KeyCode.S))
         {
-            characterController.height = defaultHeight;
-            walkSpeed = 6f;
-            runSpeed = 12f;
+            direction -= referenceCamera.transform.forward;
+        }
+            if (Input.GetKey(KeyCode.A))
+        {
+            MoveLeft(ref direction);
+        }
+            if (Input.GetKey(KeyCode.D))
+        {
+            MoveRight(ref direction);
         }
 
-        characterController.Move(moveDirection * Time.deltaTime);
+            direction.y = 0; // Keep movement in the horizontal plane
 
-        if (canMove)
+            if (direction != Vector3.zero)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            direction.Normalize();
+            // Move the character in the calculated direction
+            transform.position += direction * speed * Time.deltaTime;
+            // Rotate the mesh towards the movement direction
+            RotateMeshTowardsDirection(direction);
         }
+            rb.isKinematic = true;
+        }
+        if (Input.GetKey(KeyCode.Space) && isGrounded == true)
+        {
+            rb.isKinematic = false;
+            Jump();
+        }
+    }
+
+    void MoveLeft(ref Vector3 direction)
+    {
+        direction -= referenceCamera.transform.right;
+    }
+
+    void MoveRight(ref Vector3 direction)
+    {
+        direction += referenceCamera.transform.right;
+    }
+
+    void RotateMeshTowardsDirection(Vector3 direction)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        playerMesh.transform.rotation = Quaternion.Slerp(playerMesh.transform.rotation, targetRotation, Time.deltaTime * speed);
+    }
+
+    void Jump()
+    {
+        rb.velocity = new Vector3(0, jumpForce, 0);
+    }
+
+    void CheckGroundStatus()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 }
