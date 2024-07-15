@@ -42,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        Debug.Log("Move input: " + moveInput);
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -50,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            Debug.Log("Jump");
         }
     }
 
