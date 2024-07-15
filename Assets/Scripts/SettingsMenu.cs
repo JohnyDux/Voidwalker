@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -73,5 +74,10 @@ public class SettingsMenu : MonoBehaviour
     public void ChangeVolume(AudioMixer audioMixer, string group, Slider slider)
     {
         audioMixer.SetFloat(group, slider.value);
+    }
+
+    public void SetQuality(int count)
+    {
+        QualitySettings.SetQualityLevel(count);
     }
 }
