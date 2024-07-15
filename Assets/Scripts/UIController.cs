@@ -19,12 +19,16 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0f;
             isPaused = true;
             pauseMenu.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.Confined;
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && isPaused == true)
         {
             Time.timeScale = 1f;
             isPaused = false;
             pauseMenu.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         Cursor.visible = isPaused;

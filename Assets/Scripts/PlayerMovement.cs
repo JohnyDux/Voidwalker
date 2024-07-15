@@ -10,8 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public Transform groundCheck;
     public LayerMask groundMask;
-    private bool isGrounded;
+    public Transform cameraTransform; // Reference to the camera transform
 
+    private bool isGrounded;
     private PlayerInputActions inputActions;
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -60,7 +61,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 movement = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
+        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
+        Vector3 cameraForward = cameraTransform.forward;
+        Vector3 cameraRight = cameraTransform.right;
+
+        // Flatten the camera forward and right vectors
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        Vector3 moveDirection = cameraForward * direction.z + cameraRight * direction.x;
+
+        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+
+        // Rotate the character to face the direction of movement
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            rb.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
+        }
     }
 }

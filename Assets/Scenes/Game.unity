@@ -622,6 +622,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  cameraTransform: {fileID: 853428523}
 --- !u!54 &544359830
 Rigidbody:
   m_ObjectHideFlags: 0
