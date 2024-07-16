@@ -8,6 +8,8 @@ using TMPro;
 
 public class TestValues : MonoBehaviour
 {
+    public GameObject gameInfo;
+
     public TextMeshProUGUI playerPositionText;
     public GameObject player;
 
@@ -34,6 +36,19 @@ public class TestValues : MonoBehaviour
 
     void Update()
     {
+        //Activate/Deactivate Panel
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            if(gameInfo.activeInHierarchy == false)
+            {
+                gameInfo.SetActive(true);
+            }
+            else if (gameInfo.activeInHierarchy == true)
+            {
+                gameInfo.SetActive(false);
+            }
+        }
+
         //CPU
         numberProcessorsText.text = ($"Number of Processors: {Environment.ProcessorCount}");
         operatingSystemText.text = ($"Operating System: {SystemInfo.operatingSystem}");
