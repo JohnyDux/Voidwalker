@@ -14,11 +14,12 @@ public class UIController : MonoBehaviour
     private PlayerInputActions inputActions;
     private Vector2 Input;
 
-    //Map-Minimap
-    public RectTransform PlayerUIPositionObj; // The UI object to move
-    public float movementSpeed;
-    public Canvas canvas; // The Canvas
-    public TestValues testValues;
+    //Minimap
+    public Transform playerPos;
+    public Transform PlayerLocationSphere;
+    public float xPos;
+    public float yPos;
+    public float zPos;
 
     private void Awake()
     {
@@ -31,16 +32,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        //MINIMAP
-        if (PlayerUIPositionObj != null && canvas != null)
-        {
-            //Set UI position
-            Vector3 playerPosition = testValues.player.transform.position;
-            Vector2 targetPosition = new Vector2(movementSpeed * playerPosition.x, -movementSpeed * playerPosition.z);
-
-            // Set the UI object's position
-            PlayerUIPositionObj.anchoredPosition = Vector2.Lerp(PlayerUIPositionObj.anchoredPosition, targetPosition, 2f * Time.deltaTime);
-        }
+        PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
     }
 
     private void OnEnable()
