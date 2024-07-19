@@ -13,6 +13,10 @@ public class UIController : MonoBehaviour
     //Input
     private PlayerInputActions inputActions;
     private Vector2 Input;
+    private InputAction pauseAction;
+    private InputAction scrollAction;
+    [SerializeField]private float scrollValue;
+    private float targetFieldOfView;
 
     //Minimap
     public Transform playerPos;
@@ -20,6 +24,10 @@ public class UIController : MonoBehaviour
     public float xPos;
     public float yPos;
     public float zPos;
+    float scroll;
+    public Camera mapCamera;
+    public float smoothSpeed;
+    public float scrollSensitivity = 0.1f; // Adjust scroll sensitivity
 
     private void Awake()
     {
@@ -33,42 +41,67 @@ public class UIController : MonoBehaviour
     private void Update()
     {
         PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
+
+        // Smoothly interpolate the field of view towards the target value
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, targetFieldOfView, smoothSpeed * Time.deltaTime);
     }
 
     private void OnEnable()
     {
         inputActions.Player.Enable();
-        inputActions.Player.Pause.performed += OnPause; // Bind Pause action
-        inputActions.Player.Pause.canceled += OnPause;
+        pauseAction = inputActions.FindAction("Pause");
+
+        pauseAction.Enable();
+
+        pauseAction.performed += OnPause;
+
+        // Find the Scroll action
+        scrollAction = inputActions.FindAction("Scroll");
+        // Enable the Scroll action
+        scrollAction.Enable();
+        // Subscribe to the Scroll action
+        scrollAction.performed += OnScroll;
+        // Initialize target field of view
+        targetFieldOfView = Camera.main.fieldOfView;
     }
 
     private void OnDisable()
     {
-        inputActions.Player.Pause.performed -= OnPause; // Unbind Pause action
-        inputActions.Player.Pause.canceled -= OnPause;
+        pauseAction.performed -= OnPause;
         inputActions.Player.Disable();
+
+        // Unsubscribe from the Scroll action
+        scrollAction.performed -= OnScroll;
+
+        // Disable the Scroll action
+        scrollAction.Disable();
+        pauseAction.Disable();
     }
 
     private void OnPause(InputAction.CallbackContext context)
     {
-        Input = context.ReadValue<Vector2>();
-        if(isPaused == false)
+        if(context.ReadValue<float>() > 0)
         {
-            Time.timeScale = 0f;
-            isPaused = true;
-            pauseMenu.SetActive(true);
+            isPaused = !isPaused;
+            Time.timeScale = isPaused ? 0 : 1;
 
-            Cursor.lockState = CursorLockMode.Confined;
+            bool check1 = isPaused ? true : false;
+            pauseMenu.SetActive(check1);
+            Cursor.visible = check1;
+
+            CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
+            Cursor.lockState = lockMode;
         }
-        else if (isPaused == true)
-        {
-            Time.timeScale = 1f;
-            isPaused = false;
-            pauseMenu.SetActive(false);
+    }
 
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+    private void OnScroll(InputAction.CallbackContext context)
+    {
+        scrollValue = context.ReadValue<Vector2>().y;
 
-        Cursor.visible = isPaused;
+        // Scale down the scroll value and accumulate it to the target field of view
+        targetFieldOfView -= scrollValue * scrollSensitivity;
+
+        // Clamp the targetFieldOfView to a specific range
+        targetFieldOfView = Mathf.Clamp(targetFieldOfView, 20f, 100f); // Adjust min and max FOV values as needed
     }
 }
