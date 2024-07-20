@@ -12,6 +12,8 @@ public class TestValues : MonoBehaviour
 
     public TextMeshProUGUI playerPositionText;
     public GameObject player;
+    public UIController uIController;
+    public TextMeshProUGUI mousePositionText;
 
     //CPU
     public TextMeshProUGUI numberProcessorsText;
@@ -26,7 +28,6 @@ public class TestValues : MonoBehaviour
 
     //Physics
     public TextMeshProUGUI performanceText;
-    private float deltaTime = 0.0f;
     private int collisionCount = 0;
     private int triggerCount = 0;
 
@@ -56,7 +57,7 @@ public class TestValues : MonoBehaviour
         graphicsDeviceText.text = ($"Graphics Device: {SystemInfo.graphicsDeviceName}");
 
         //Memory
-        playerPositionText.text = "X: \n" + player.transform.position.x + "Y: \n" + player.transform.position.y + "Z: \n" + player.transform.position.z;
+        playerPositionText.text = "X: " + player.transform.position.x + "\nY: " + player.transform.position.y + "\nZ: " + player.transform.position.z;
         allocatedMemoryText.text = "Allocated Memory: " + Profiler.GetTotalAllocatedMemoryLong().ToString();
         reservedMemoryyText.text = "Reserved Memory: " + Profiler.GetTotalReservedMemoryLong().ToString();
         unusedReservedMemoryText.text = "Unused Reserved Memory: " + Profiler.GetTotalUnusedReservedMemoryLong().ToString();

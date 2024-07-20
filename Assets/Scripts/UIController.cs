@@ -6,28 +6,40 @@ using UnityEngine.InputSystem;
 
 public class UIController : MonoBehaviour
 {
-    //Pause
+    [Header("Pause")]
     public bool isPaused;
     public GameObject pauseMenu;
 
-    //Input
+    [Header("Input")]
     private PlayerInputActions inputActions;
-    private Vector2 Input;
     private InputAction pauseAction;
     private InputAction scrollAction;
-    [SerializeField]private float scrollValue;
-    private float targetFieldOfView;
 
-    //Minimap
+    [Header("Minimap")]
+    //Player Pos
     public Transform playerPos;
     public Transform PlayerLocationSphere;
     public float xPos;
     public float yPos;
     public float zPos;
+
+    [Header("Minimap")]
+    //Mouse Scroll
+    Vector3 originalCameraPosition;
+    public float zOffset = 0f;
+    public float minX, maxX; // Minimum and maximum X position for the camera
+    public float minY, maxY; // Minimum and maximum Y position for the camera
+    public float MapCamMoveSpeed; // Speed factor for movement
+    public float edgeThreshold = 0.1f; // Threshold for detecting edge of the screen
+    public Color edgeColor = Color.red; // Color for the edge threshold visualization
+    public float edgeThickness = 2f; // Thickness of the edge rectangle lines
     float scroll;
     public Camera mapCamera;
-    public float smoothSpeed;
-    public float scrollSensitivity = 0.1f; // Adjust scroll sensitivity
+    public float scrollSpeed = 1f; // Adjust this value to control the scroll sensitivity
+    public float curOrthoSize;
+    public float minOrthoSize = 1f; // Minimum orthographic size
+    public float maxOrthoSize = 20f; // Maximum orthographic size
+
 
     private void Awake()
     {
@@ -36,54 +48,124 @@ public class UIController : MonoBehaviour
         pauseMenu.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Confined;
-    }
 
-    private void Update()
-    {
-        PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
-
-        // Smoothly interpolate the field of view towards the target value
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, targetFieldOfView, smoothSpeed * Time.deltaTime);
+        originalCameraPosition = mapCamera.transform.position;
     }
 
     private void OnEnable()
     {
         inputActions.Player.Enable();
+
+        //Pause
         pauseAction = inputActions.FindAction("Pause");
-
         pauseAction.Enable();
-
         pauseAction.performed += OnPause;
 
-        // Find the Scroll action
+        //Scroll
         scrollAction = inputActions.FindAction("Scroll");
-        // Enable the Scroll action
         scrollAction.Enable();
-        // Subscribe to the Scroll action
         scrollAction.performed += OnScroll;
-        // Initialize target field of view
-        targetFieldOfView = Camera.main.fieldOfView;
+        scrollAction.canceled += OnScroll;
     }
 
     private void OnDisable()
     {
+        //Pause
         pauseAction.performed -= OnPause;
-        inputActions.Player.Disable();
-
-        // Unsubscribe from the Scroll action
-        scrollAction.performed -= OnScroll;
-
-        // Disable the Scroll action
-        scrollAction.Disable();
         pauseAction.Disable();
+
+
+        // Scroll
+        scrollAction.performed -= OnScroll;
+        scrollAction.canceled -= OnScroll;
+        scrollAction.Disable();
+
+        inputActions.Player.Disable();
+    }
+
+    private void Update()
+    {
+        PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
+        curOrthoSize = mapCamera.orthographicSize;
+
+        //Minimap Mouse
+        if (isPaused)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                // Get the mouse position in screen coordinates
+                Vector3 mouseScreenPos = Input.mousePosition;
+
+                // Convert mouse position to normalized coordinates (0 to 1)
+                Vector2 normalizedMousePos = new Vector2(mouseScreenPos.x / Screen.width, mouseScreenPos.y / Screen.height);
+
+                // Calculate edge positions
+                float leftEdge = edgeThreshold * Screen.width;
+                float rightEdge = (1 - edgeThreshold) * Screen.width;
+                float topEdge = edgeThreshold * Screen.height;
+                float bottomEdge = (1 - edgeThreshold) * Screen.height;
+
+                // Check if the mouse is near the edge of the screen
+                if (normalizedMousePos.x < edgeThreshold)
+                {
+                    // Move left
+                    MoveCamera(Vector3.left);
+                }
+                else if (normalizedMousePos.x > 1 - edgeThreshold)
+                {
+                    // Move right
+                    MoveCamera(Vector3.right);
+                }
+
+                if (normalizedMousePos.y < edgeThreshold)
+                {
+                    // Move down
+                    MoveCamera(Vector3.down);
+                }
+                else if (normalizedMousePos.y > 1 - edgeThreshold)
+                {
+                    // Move up
+                    MoveCamera(Vector3.up);
+                }
+            }  
+        }
+    }
+
+    private void MoveCamera(Vector3 direction)
+    {
+        // Adjust direction based on camera type
+        if (mapCamera.orthographic)
+        {
+            // Orthographic camera: move in X and Y axes
+            direction = new Vector3(direction.x, 0, direction.y);
+        }
+        else
+        {
+            // Perspective camera: move in X and Y axes
+            direction = new Vector3(direction.x, 0, direction.y);
+        }
+
+        if (direction.x < minX + 5 || direction.x > maxX - 5 && direction.y < minY + 5 && direction.y > maxY - 5)
+        {
+            MapCamMoveSpeed = 0f;
+        }
+        else
+        {
+            MapCamMoveSpeed = 20f;
+        }
+
+        // Move the camera in the specified direction
+        mapCamera.transform.position += direction * MapCamMoveSpeed * Time.deltaTime;
     }
 
     private void OnPause(InputAction.CallbackContext context)
     {
-        if(context.ReadValue<float>() > 0)
+        if (context.ReadValue<float>() > 0)
         {
             isPaused = !isPaused;
-            Time.timeScale = isPaused ? 0 : 1;
+            //Time.timeScale = isPaused ? 0 : 1;
+
+            mapCamera.transform.position = originalCameraPosition;
 
             bool check1 = isPaused ? true : false;
             pauseMenu.SetActive(check1);
@@ -96,12 +178,55 @@ public class UIController : MonoBehaviour
 
     private void OnScroll(InputAction.CallbackContext context)
     {
-        scrollValue = context.ReadValue<Vector2>().y;
+        if (isPaused == true)
+        {
+            // Read the scroll value
+            Vector2 scrollInput = context.ReadValue<Vector2>();
 
-        // Scale down the scroll value and accumulate it to the target field of view
-        targetFieldOfView -= scrollValue * scrollSensitivity;
+            // Adjust the orthographic size based on the scroll input
+            mapCamera.orthographicSize -= scrollInput.y * scrollSpeed;
+            mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, minOrthoSize, maxOrthoSize);
+        }
+    }
 
-        // Clamp the targetFieldOfView to a specific range
-        targetFieldOfView = Mathf.Clamp(targetFieldOfView, 20f, 100f); // Adjust min and max FOV values as needed
+    private void OnMouseClickStarted(InputAction.CallbackContext context)
+    {
+        // Mouse button was pressed
+        Debug.Log("Left mouse button pressed.");
+    }
+
+    private void OnMouseClickCanceled(InputAction.CallbackContext context)
+    {
+        // Mouse button was released
+        Debug.Log("Left mouse button released.");
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (mapCamera == null) return;
+
+        // Get the camera's viewport dimensions
+        Vector3 topLeft = mapCamera.ViewportToWorldPoint(new Vector3(0, 1, mapCamera.nearClipPlane));
+        Vector3 topRight = mapCamera.ViewportToWorldPoint(new Vector3(1, 1, mapCamera.nearClipPlane));
+        Vector3 bottomLeft = mapCamera.ViewportToWorldPoint(new Vector3(0, 0, mapCamera.nearClipPlane));
+        Vector3 bottomRight = mapCamera.ViewportToWorldPoint(new Vector3(1, 0, mapCamera.nearClipPlane));
+
+        // Calculate the edge rectangle dimensions
+        float edgeWidth = Mathf.Abs(topRight.x - topLeft.x) * edgeThreshold;
+        float edgeHeight = Mathf.Abs(topLeft.y - bottomLeft.y) * edgeThreshold;
+
+        // Define the corners of the rectangle
+        Vector3 rectangleTopLeft = new Vector3(topLeft.x + edgeWidth, topLeft.y, topLeft.z);
+        Vector3 rectangleTopRight = new Vector3(topRight.x - edgeWidth, topRight.y, topRight.z);
+        Vector3 rectangleBottomLeft = new Vector3(bottomLeft.x + edgeWidth, bottomLeft.y, bottomLeft.z);
+        Vector3 rectangleBottomRight = new Vector3(bottomRight.x - edgeWidth, bottomRight.y, bottomRight.z);
+
+        Gizmos.color = edgeColor;
+
+        // Draw the rectangle
+        Gizmos.DrawLine(rectangleTopLeft, rectangleTopRight); // Top edge
+        Gizmos.DrawLine(rectangleTopRight, rectangleBottomRight); // Right edge
+        Gizmos.DrawLine(rectangleBottomRight, rectangleBottomLeft); // Bottom edge
+        Gizmos.DrawLine(rectangleBottomLeft, rectangleTopLeft); // Left edge
     }
 }
