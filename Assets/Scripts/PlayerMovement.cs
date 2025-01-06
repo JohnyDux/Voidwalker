@@ -12,10 +12,12 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public Transform cameraTransform; // Reference to the camera transform
 
-    private bool isGrounded;
+    [SerializeField]private bool isGrounded;
     private PlayerInputActions inputActions;
-    private Vector2 moveInput;
+    [SerializeField]private Vector2 moveInput;
     private Rigidbody rb;
+
+    //public Animator animator;
 
     private void Awake()
     {
@@ -46,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump Key Pressed");
         if (isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -73,6 +76,23 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = cameraForward * direction.z + cameraRight * direction.x;
 
         rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+        
+        if(moveInput.x > 0)
+        {
+            //animator.SetFloat("moveInput", moveInput.x);
+        }
+        else if(moveInput.x < 0)
+        {
+            //animator.SetFloat("moveInput", -moveInput.x);
+        }
+        else if(moveInput.y > 0)
+        {
+           //animator.SetFloat("moveInput", moveInput.y);
+        }
+        else
+        {
+            //animator.SetFloat("moveInput", -moveInput.y);
+        }
 
         // Rotate the character to face the direction of movement
         if (moveDirection != Vector3.zero)
@@ -80,5 +100,12 @@ public class PlayerMovement : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             rb.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(groundCheck.transform.position, 1);
     }
 }
