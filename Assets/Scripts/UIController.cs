@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI; 
 
 public class UIController : MonoBehaviour
 {
+    public GameObject hud;
+
     [Header("Pause")]
     public bool isPaused;
     public GameObject pauseMenu;
@@ -14,6 +17,7 @@ public class UIController : MonoBehaviour
     private PlayerInputActions inputActions;
     private InputAction pauseAction;
     private InputAction scrollAction;
+    private InputAction mapAction;
 
     [Header("Minimap")]
     //Player Pos
@@ -40,12 +44,16 @@ public class UIController : MonoBehaviour
     public float minOrthoSize = 1f; // Minimum orthographic size
     public float maxOrthoSize = 20f; // Maximum orthographic size
 
+    public int currentFloor = 0;
+    public List<Image> floorImages; 
+
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         isPaused = false;
         pauseMenu.SetActive(false);
+        hud.SetActive(true);
 
         Cursor.lockState = CursorLockMode.Confined;
 
@@ -88,9 +96,10 @@ public class UIController : MonoBehaviour
         PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
         curOrthoSize = mapCamera.orthographicSize;
 
-        //Minimap Mouse
+        //Minimap
         if (isPaused)
         {
+            //Minimap Mouse
             if (Input.GetMouseButton(0))
             {
                 // Get the mouse position in screen coordinates
@@ -127,7 +136,21 @@ public class UIController : MonoBehaviour
                     // Move up
                     MoveCamera(Vector3.up);
                 }
-            }  
+            }
+
+            if (Input.GetKey(KeyCode.Alpha1))
+            {
+                SelectFloor(1);
+            }
+            else if (Input.GetKey(KeyCode.Alpha2))
+            {
+                SelectFloor(2);
+            }
+            else if (Input.GetKey(KeyCode.Alpha3))
+            {
+                SelectFloor(3);
+            }
+
         }
     }
 
@@ -163,12 +186,13 @@ public class UIController : MonoBehaviour
         if (context.ReadValue<float>() > 0)
         {
             isPaused = !isPaused;
-            //Time.timeScale = isPaused ? 0 : 1;
+            Time.timeScale = isPaused ? 0 : 1;
 
             mapCamera.transform.position = originalCameraPosition;
 
             bool check1 = isPaused ? true : false;
             pauseMenu.SetActive(check1);
+            hud.SetActive(!check1);
             Cursor.visible = check1;
 
             CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
@@ -189,16 +213,25 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void OnMouseClickStarted(InputAction.CallbackContext context)
+    private void SelectFloor(int i)
     {
-        // Mouse button was pressed
-        Debug.Log("Left mouse button pressed.");
-    }
-
-    private void OnMouseClickCanceled(InputAction.CallbackContext context)
-    {
-        // Mouse button was released
-        Debug.Log("Left mouse button released.");
+        if(i >= 1 && i <= 4)
+        {
+            foreach (Image j in floorImages)
+            {
+                if (j.GetComponentIndex() == i)
+                {
+                    // Set the image color to gray
+                    floorImages[i].color = Color.gray;
+                }
+                else
+                {
+                    // Set the image color to white
+                    floorImages[i].color = Color.white;
+                }
+            }
+            currentFloor = i;
+        }
     }
 
     private void OnDrawGizmos()
