@@ -7,6 +7,7 @@ using Cinemachine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float Speed;
     public float jumpForce = 5f;
     public Transform groundCheck;
     public LayerMask groundMask;
@@ -44,6 +45,9 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        Speed = moveSpeed;
+
+        Debug.Log("Walk Key Pressed");
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -75,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDirection = cameraForward * direction.z + cameraRight * direction.x;
 
-        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + moveDirection * Speed * Time.fixedDeltaTime);
         
         if(moveInput.x > 0)
         {
