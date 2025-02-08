@@ -196,7 +196,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 922.5401}
   m_SizeDelta: {x: 15.241, y: 922.54}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &28777913
@@ -868,8 +868,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 436249025}
   m_HandleRect: {fileID: 436249024}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99996054
+  m_Value: -25317.088
+  m_Size: 0.9999605
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2591,10 +2591,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 96920956}
   - {fileID: 519509126}
   - {fileID: 2044360737}
   - {fileID: 114956431}
+  - {fileID: 96920956}
   m_Father: {fileID: 883826453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2876,7 +2876,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -243}
+  m_AnchoredPosition: {x: 850, y: -429}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &466535551
@@ -4167,7 +4167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 710, y: -408}
+  m_AnchoredPosition: {x: 710, y: -368}
   m_SizeDelta: {x: 480.453, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &687107613
@@ -8230,8 +8230,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1}
-  m_SizeDelta: {x: 994.2399, y: 1080}
+  m_AnchoredPosition: {x: 0, y: 0.46211}
+  m_SizeDelta: {x: 994.24, y: 1076.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1454437765
 MonoBehaviour:
@@ -8624,6 +8624,7 @@ MonoBehaviour:
   sceneName: Game
   LoadingScreen: {fileID: 1631323504}
   progressText: {fileID: 444810591}
+  loadingDelay: 5
 --- !u!4 &1546337786
 Transform:
   m_ObjectHideFlags: 0
@@ -9047,8 +9048,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 444810593}
   - {fileID: 1868972834}
+  - {fileID: 444810593}
   - {fileID: 337238991}
   - {fileID: 1409823457}
   - {fileID: 687107612}

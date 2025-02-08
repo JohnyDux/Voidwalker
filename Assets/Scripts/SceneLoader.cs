@@ -10,6 +10,7 @@ public class SceneLoader : MonoBehaviour
     public string sceneName; // The name of the scene to load
     public GameObject LoadingScreen;
     public TextMeshProUGUI progressText;
+    public float loadingDelay;
 
     private void Start()
     {
@@ -48,14 +49,14 @@ public class SceneLoader : MonoBehaviour
             // Update the progress text UI
             if (progressText != null)
             {
-                progressText.text = $"Loading progress: {progress * 100}%";
+                progressText.text = (progress * 100).ToString() + "%";
             }
 
             // Check if the load has finished
             if (asyncOperation.progress >= 0.9f)
             {
                 // Wait for an additional 4 seconds delay
-                yield return new WaitForSeconds(4.0f);
+                yield return new WaitForSeconds(loadingDelay);
 
                 // Optionally, allow the scene to activate when loading is done
                 asyncOperation.allowSceneActivation = true;
