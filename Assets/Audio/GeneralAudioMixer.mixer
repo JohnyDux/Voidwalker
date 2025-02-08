@@ -145,7 +145,7 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 06f524f901acaca428537a2eab06b1ed
   m_FloatValues:
-    c81232b3f1ada4a4b931d7f12d299e4c: 5.8946915
+    c81232b3f1ada4a4b931d7f12d299e4c: 0.3013182
   m_TransitionOverrides: {}
 --- !u!243 &2782587837579074322
 AudioMixerGroupController:
@@ -153,7 +153,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ambient noise
+  m_Name: AmbientNoise
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 793560b751cdfba4291ef4882b1a193e
   m_Children: []

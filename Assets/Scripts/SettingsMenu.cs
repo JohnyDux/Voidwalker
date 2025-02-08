@@ -18,10 +18,8 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("Audio")]
     public AudioMixer audioMixer;
-    public Slider masterAudioSlider;
-    public Slider musicAudioSlider;
-    public Slider soundFxAudioSlider;
-    public Slider ambientNoiseAudioSlider;
+    public TextMeshProUGUI[] valueText;
+    float currentVolume;
 
     [Header("Key Bindings")]
     public InputActionAsset inputActions;
@@ -32,6 +30,7 @@ public class SettingsMenu : MonoBehaviour
         settingsMenu.SetActive(false);
 
         minY = startY;
+        valueText[0].text = currentVolume.ToString();
     }
 
     private void Update()
@@ -46,21 +45,6 @@ public class SettingsMenu : MonoBehaviour
 
         // Apply the clamped position back to the GameObject
         content.anchoredPosition = currentPosition;
-
-
-        //VOLUME
-
-        //Master Volume
-        ChangeVolume(audioMixer, "masterVol", masterAudioSlider);
-
-        //Music Volume
-        ChangeVolume(audioMixer, "musicVol", musicAudioSlider);
-
-        //SoundFx Volume
-        ChangeVolume(audioMixer, "soundFxVol", soundFxAudioSlider);
-
-        //Ambient Noise Volume
-        ChangeVolume(audioMixer, "ambNoiseVol", ambientNoiseAudioSlider);
     }
 
     public void ActivateSettingsMenu()
@@ -76,9 +60,17 @@ public class SettingsMenu : MonoBehaviour
         settingsMenu.SetActive(false);
     }
 
-    public void ChangeVolume(AudioMixer audioMixer, string group, Slider slider)
+    public void ChangeMasterVolume(float value)
     {
-        audioMixer.SetFloat(group, slider.value);
+        string group = "masterVol";
+
+        //change volume
+        audioMixer.GetFloat(group, out currentVolume);
+        audioMixer.SetFloat(group, currentVolume + value);
+
+        //change the text
+        valueText[0].text = currentVolume.ToString();
+
     }
 
     public void SetQuality(int count)
