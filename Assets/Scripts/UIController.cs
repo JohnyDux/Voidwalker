@@ -28,7 +28,7 @@ public class UIController : MonoBehaviour
     [Header("MINIMAP")]
     //Mouse Scroll
     [Header("/Camera Constraint")]
-    Vector3 originalCameraPosition;
+    public Vector3 originalCameraPosition;
     public float zOffset = 0f;
     public float minX, maxX; // Minimum and maximum X position for the camera
     public float minY, maxY; // Minimum and maximum Y position for the camera
@@ -39,6 +39,8 @@ public class UIController : MonoBehaviour
     public Camera mapCamera;
     [SerializeField] private Vector2 moveInput;
     public float camMoveSpeed;
+
+    public Vector3 targetPosition;
 
     [Header("/Scrolling Manager")]
     public float scrollSpeed = 1f; // Adjust this value to control the scroll sensitivity
@@ -59,7 +61,6 @@ public class UIController : MonoBehaviour
         hud.SetActive(true);
 
         Cursor.lockState = CursorLockMode.Confined;
-
         originalCameraPosition = mapCamera.transform.position;
         ShowFloor(currentFloor);
     }
@@ -96,6 +97,14 @@ public class UIController : MonoBehaviour
 
         if (isPaused == true)
         {
+            //Center on Player
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                mapCamera.transform.position = new Vector3(PlayerLocationSphere.position.x, originalCameraPosition.y, PlayerLocationSphere.position.z);
+                mapCamera.orthographicSize = 130.39f;
+                Debug.Log("Center camera");
+            }
+
             //Minimap Movement
 
             // Check if the mouse is near the edge of the screen
