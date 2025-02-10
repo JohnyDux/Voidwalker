@@ -19,7 +19,10 @@ public class SettingsMenu : MonoBehaviour
     [Header("Audio")]
     public AudioMixer audioMixer;
     public TextMeshProUGUI[] valueText;
-    float currentVolume;
+    float currentMasterVolume;
+    float currentMusicVolume;
+    float currentSoundFXVolume;
+    float currentAmbientNoiseVolume;
 
     [Header("Key Bindings")]
     public InputActionAsset inputActions;
@@ -30,7 +33,14 @@ public class SettingsMenu : MonoBehaviour
         settingsMenu.SetActive(false);
 
         minY = startY;
-        valueText[0].text = currentVolume.ToString();
+        currentMasterVolume = 0f;
+        currentMusicVolume = 0f;
+        currentSoundFXVolume = 0f;
+        currentAmbientNoiseVolume = 0f;
+        valueText[0].text = currentMasterVolume.ToString();
+        valueText[1].text = currentMusicVolume.ToString();
+        valueText[2].text = currentSoundFXVolume.ToString();
+        valueText[3].text = currentAmbientNoiseVolume.ToString();
     }
 
     private void Update()
@@ -65,12 +75,99 @@ public class SettingsMenu : MonoBehaviour
         string group = "masterVol";
 
         //change volume
-        audioMixer.GetFloat(group, out currentVolume);
-        audioMixer.SetFloat(group, currentVolume + value);
+        audioMixer.GetFloat(group, out currentMasterVolume);
+
+        currentMasterVolume = currentMasterVolume + value;
+
+        if (currentMasterVolume >= -80 && currentMasterVolume <= 20)
+        {
+            audioMixer.SetFloat(group, currentMasterVolume);
+        }
+        
+        //change the text
+        if((currentMasterVolume + 80) >= 0)
+        {
+            valueText[0].text = (currentMasterVolume + 80).ToString();
+        }
+        else
+        {
+            valueText[0].text = "0";
+        }
+    }
+
+    public void ChangeMusicVolume(float value)
+    {
+        string group = "musicVol";
+
+        //change volume
+        audioMixer.GetFloat(group, out currentMusicVolume);
+
+        currentMusicVolume = currentMusicVolume + value;
+
+        if (currentMusicVolume >= -80 && currentMusicVolume <= 20)
+        {
+            audioMixer.SetFloat(group, currentMusicVolume);
+        }
 
         //change the text
-        valueText[0].text = currentVolume.ToString();
+        if ((currentMusicVolume + 80) >= 0)
+        {
+            valueText[1].text = (currentMusicVolume + 80).ToString();
+        }
+        else
+        {
+            valueText[1].text = "0";
+        }
+    }
 
+    public void ChangeSoundFXVolume(float value)
+    {
+        string group = "soundFxVol";
+
+        //change volume
+        audioMixer.GetFloat(group, out currentSoundFXVolume);
+
+        currentSoundFXVolume = currentSoundFXVolume + value;
+
+        if (currentSoundFXVolume >= -80 && currentSoundFXVolume <= 20)
+        {
+            audioMixer.SetFloat(group, currentSoundFXVolume);
+        }
+
+        //change the text
+        if ((currentSoundFXVolume + 80) >= 0)
+        {
+            valueText[2].text = (currentSoundFXVolume + 80).ToString();
+        }
+        else
+        {
+            valueText[2].text = "0";
+        }
+    }
+
+    public void ChangeAmbientNoiseVolume(float value)
+    {
+        string group = "ambNoiseVol";
+
+        //change volume
+        audioMixer.GetFloat(group, out currentAmbientNoiseVolume);
+
+        currentAmbientNoiseVolume = currentAmbientNoiseVolume + value;
+
+        if (currentAmbientNoiseVolume >= -80 && currentAmbientNoiseVolume <= 20)
+        {
+            audioMixer.SetFloat(group, currentAmbientNoiseVolume);
+        }
+
+        //change the text
+        if ((currentAmbientNoiseVolume + 80) >= 0)
+        {
+            valueText[3].text = (currentAmbientNoiseVolume + 80).ToString();
+        }
+        else
+        {
+            valueText[3].text = "0";
+        }
     }
 
     public void SetQuality(int count)
