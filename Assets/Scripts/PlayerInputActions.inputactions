@@ -24,15 +24,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "e8a149f2-5bab-44c9-9700-166e9769dc9a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Scroll",
                     "type": "Value",
                     "id": "fef2db07-7a6d-47af-88e1-7656425fd737",
@@ -58,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "MapAction",
-                    "type": "Value",
-                    "id": "a3bce217-9e11-4630-801c-b14962301b1b",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -138,17 +120,6 @@
                 },
                 {
                     "name": "",
-                    "id": "bd79da9b-e688-4883-8996-78181f0206af",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "875af18f-c379-411f-868d-3831a6065cf6",
                     "path": "Mouse/Scroll",
                     "interactions": "",
@@ -179,50 +150,6 @@
                     "action": "Mouse Click",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "2D Vector",
-                    "id": "5304e240-2a52-4b79-bb67-813c99cc368b",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MapAction",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "2e69a639-9c14-48a7-94db-4f1f3adbdd5e",
-                    "path": "<Keyboard>/numpad1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MapAction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "16730c96-7258-4f6b-a25e-5e88d9141e01",
-                    "path": "<Keyboard>/numpad2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MapAction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "e1c60917-601c-4f82-868c-ff511c7a53da",
-                    "path": "<Keyboard>/numpad3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MapAction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }

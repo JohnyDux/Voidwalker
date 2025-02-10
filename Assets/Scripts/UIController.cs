@@ -15,9 +15,7 @@ public class UIController : MonoBehaviour
 
     [Header("Input")]
     private PlayerInputActions inputActions;
-    private InputAction pauseAction;
     private InputAction scrollAction;
-    private InputAction mapAction;
 
     [Header("Minimap")]
     //Player Pos
@@ -27,8 +25,9 @@ public class UIController : MonoBehaviour
     public float yPos;
     public float zPos;
 
-    [Header("Minimap")]
+    [Header("MINIMAP")]
     //Mouse Scroll
+    [Header("/Camera Constraint")]
     Vector3 originalCameraPosition;
     public float zOffset = 0f;
     public float minX, maxX; // Minimum and maximum X position for the camera
@@ -37,16 +36,20 @@ public class UIController : MonoBehaviour
     public float edgeThreshold = 0.1f; // Threshold for detecting edge of the screen
     public Color edgeColor = Color.red; // Color for the edge threshold visualization
     public float edgeThickness = 2f; // Thickness of the edge rectangle lines
-    float scroll;
     public Camera mapCamera;
+    [SerializeField] private Vector2 moveInput;
+    public float camMoveSpeed;
+
+    [Header("/Scrolling Manager")]
     public float scrollSpeed = 1f; // Adjust this value to control the scroll sensitivity
-    public float curOrthoSize;
     public float minOrthoSize = 1f; // Minimum orthographic size
     public float maxOrthoSize = 20f; // Maximum orthographic size
 
+    [Header("/Floor Manager")]
     public int currentFloor = 0;
-    public List<Image> floorImages; 
-
+    public List<GameObject> FloorMaps;
+    public List<GameObject> ActiveFloorImages;
+    public List<GameObject> InactiveFloorImages;
 
     private void Awake()
     {
@@ -58,16 +61,12 @@ public class UIController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 
         originalCameraPosition = mapCamera.transform.position;
+        ShowFloor(currentFloor);
     }
 
     private void OnEnable()
     {
         inputActions.Player.Enable();
-
-        //Pause
-        pauseAction = inputActions.FindAction("Pause");
-        pauseAction.Enable();
-        pauseAction.performed += OnPause;
 
         //Scroll
         scrollAction = inputActions.FindAction("Scroll");
@@ -78,11 +77,6 @@ public class UIController : MonoBehaviour
 
     private void OnDisable()
     {
-        //Pause
-        pauseAction.performed -= OnPause;
-        pauseAction.Disable();
-
-
         // Scroll
         scrollAction.performed -= OnScroll;
         scrollAction.canceled -= OnScroll;
@@ -94,110 +88,108 @@ public class UIController : MonoBehaviour
     private void Update()
     {
         PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
-        curOrthoSize = mapCamera.orthographicSize;
 
-        //Minimap
-        if (isPaused)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //Minimap Mouse
-            if (Input.GetMouseButton(0))
-            {
-                // Get the mouse position in screen coordinates
-                Vector3 mouseScreenPos = Input.mousePosition;
-
-                // Convert mouse position to normalized coordinates (0 to 1)
-                Vector2 normalizedMousePos = new Vector2(mouseScreenPos.x / Screen.width, mouseScreenPos.y / Screen.height);
-
-                // Calculate edge positions
-                float leftEdge = edgeThreshold * Screen.width;
-                float rightEdge = (1 - edgeThreshold) * Screen.width;
-                float topEdge = edgeThreshold * Screen.height;
-                float bottomEdge = (1 - edgeThreshold) * Screen.height;
-
-                // Check if the mouse is near the edge of the screen
-                if (normalizedMousePos.x < edgeThreshold)
-                {
-                    // Move left
-                    MoveCamera(Vector3.left);
-                }
-                else if (normalizedMousePos.x > 1 - edgeThreshold)
-                {
-                    // Move right
-                    MoveCamera(Vector3.right);
-                }
-
-                if (normalizedMousePos.y < edgeThreshold)
-                {
-                    // Move down
-                    MoveCamera(Vector3.down);
-                }
-                else if (normalizedMousePos.y > 1 - edgeThreshold)
-                {
-                    // Move up
-                    MoveCamera(Vector3.up);
-                }
-            }
-
-            if (Input.GetKey(KeyCode.Alpha1))
-            {
-                SelectFloor(1);
-            }
-            else if (Input.GetKey(KeyCode.Alpha2))
-            {
-                SelectFloor(2);
-            }
-            else if (Input.GetKey(KeyCode.Alpha3))
-            {
-                SelectFloor(3);
-            }
-
+            OnPause();
         }
+
+        if (isPaused == true)
+        {
+            //Minimap Movement
+
+            // Check if the mouse is near the edge of the screen
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                // Move left
+                moveInput = Vector3.left;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                moveInput = Vector3.zero;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                // Move right
+                moveInput = Vector3.right;
+            }
+            else if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                moveInput = Vector3.zero;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                // Move down
+                moveInput = Vector3.down;
+            }
+            else if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                moveInput = Vector3.zero;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                // Move up
+                moveInput = Vector3.up;
+            }
+            else if (Input.GetKeyUp(KeyCode.UpArrow))
+            {
+                moveInput = Vector3.zero;
+            }
+            MoveCamera(moveInput);
+
+            //Zoom
+            if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus))
+            {
+                Debug.Log("Minus key pressed");
+                mapCamera.orthographicSize += 10;
+                mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, minOrthoSize, maxOrthoSize);
+            }
+            else if (Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus))
+            {
+                Debug.Log("Plus key pressed");
+                mapCamera.orthographicSize -= 10;
+                mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, minOrthoSize, maxOrthoSize);
+            }
+
+            //Choosing Floors
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ShowFloor(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ShowFloor(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                ShowFloor(2);
+            }
+        }
+
     }
 
     private void MoveCamera(Vector3 direction)
     {
-        // Adjust direction based on camera type
-        if (mapCamera.orthographic)
+        if (isPaused == true)
         {
-            // Orthographic camera: move in X and Y axes
-            direction = new Vector3(direction.x, 0, direction.y);
+            mapCamera.transform.Translate(camMoveSpeed * direction);  
         }
-        else
-        {
-            // Perspective camera: move in X and Y axes
-            direction = new Vector3(direction.x, 0, direction.y);
-        }
-
-        if (direction.x < minX + 5 || direction.x > maxX - 5 && direction.y < minY + 5 && direction.y > maxY - 5)
-        {
-            MapCamMoveSpeed = 0f;
-        }
-        else
-        {
-            MapCamMoveSpeed = 20f;
-        }
-
-        // Move the camera in the specified direction
-        mapCamera.transform.position += direction * MapCamMoveSpeed * Time.deltaTime;
     }
 
-    private void OnPause(InputAction.CallbackContext context)
+    private void OnPause()
     {
-        if (context.ReadValue<float>() > 0)
-        {
-            isPaused = !isPaused;
-            Time.timeScale = isPaused ? 0 : 1;
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0 : 1;
 
-            mapCamera.transform.position = originalCameraPosition;
+        mapCamera.transform.position = originalCameraPosition;
 
-            bool check1 = isPaused ? true : false;
-            pauseMenu.SetActive(check1);
-            hud.SetActive(!check1);
-            Cursor.visible = check1;
+        bool check1 = isPaused ? true : false;
+        pauseMenu.SetActive(check1);
+        hud.SetActive(!check1);
+        Cursor.visible = check1;
 
-            CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
-            Cursor.lockState = lockMode;
-        }
+        CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.lockState = lockMode;
     }
 
     private void OnScroll(InputAction.CallbackContext context)
@@ -213,24 +205,35 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void SelectFloor(int i)
+    private void ShowFloor(int i)
     {
-        if(i >= 1 && i <= 4)
+        int max = ActiveFloorImages.Count;
+        if (i >= 0 && i <= max)
         {
-            foreach (Image j in floorImages)
+            for (int j = 0; j < ActiveFloorImages.Count; j++)
             {
-                if (j.GetComponentIndex() == i)
+                RectTransform rectTransform = ActiveFloorImages[j].GetComponent<RectTransform>();
+                if (rectTransform != null)
                 {
-                    // Set the image color to gray
-                    floorImages[i].color = Color.gray;
+                    if (j == i)
+                    {
+                        ActiveFloorImages[j].SetActive(true);
+                        FloorMaps[i].SetActive(true);
+                        InactiveFloorImages[j].SetActive(false);
+                        currentFloor = i;
+                    }
+                    else
+                    {
+                        FloorMaps[j].SetActive(false);
+                        InactiveFloorImages[j].SetActive(true);
+                        ActiveFloorImages[j].SetActive(false);
+                    }
                 }
                 else
                 {
-                    // Set the image color to white
-                    floorImages[i].color = Color.white;
+                    Debug.LogError("RectTransform not found on Image at index " + j);
                 }
             }
-            currentFloor = i;
         }
     }
 
