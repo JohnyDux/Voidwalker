@@ -51,9 +51,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Select",
                     "type": "Button",
                     "id": "1f29a9ea-cf18-43ce-92e4-fc18573406bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChooseOption",
+                    "type": "Button",
+                    "id": "6fd9f5c1-c433-40ee-99b2-c9d727e1afd6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -167,7 +176,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Interact",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "56b9891c-012d-4a5d-bd16-21dfd740f538",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ChooseOption",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

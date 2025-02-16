@@ -493,8 +493,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneToLoad: Game
-  clickInput: 0
+  levelsBoard: {fileID: 995454573}
   loadingScreen: {fileID: 1338163517}
+  selectedFloorIndex: 0
+  selector: {fileID: 1231777642}
 --- !u!65 &539564026
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -853,6 +855,16 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 857306481}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &995454573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 996253495574051680, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1338163516}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1231777642 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 483256367320294246, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1338163516}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1338163516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -861,6 +873,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 483256367320294246, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -61
+      objectReference: {fileID: 0}
     - target: {fileID: 3747279650391608678, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_Name
       value: Canvas
