@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -16,17 +17,22 @@ public class LevelButton : MonoBehaviour
     [SerializeField] GameObject loadingScreen;
     [SerializeField] int selectedFloorIndex;
     public RectTransform selector;
+    bool selectorCanMove;
+    public Image selectorImage;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         loadingScreen.SetActive(false);
         levelsBoard.SetActive(false);
+        selectorImage.color = Color.black;
+        selectorCanMove = true;
     }
 
     private void OnEnable()
     {
         inputActions.Player.ChooseOption.performed += ChooseFloor;
+        inputActions.Player.SelectOption.performed += SelectOption;
         inputActions.Player.Enable();
         inputActions.Player.Select.performed += OnLoad;
     }
@@ -35,6 +41,7 @@ public class LevelButton : MonoBehaviour
     {
         inputActions.Player.Select.performed -= OnLoad;
         inputActions.Player.ChooseOption.performed -= ChooseFloor;
+        inputActions.Player.SelectOption.performed -= SelectOption;
         inputActions.Player.Disable();
     }
 
@@ -48,33 +55,50 @@ public class LevelButton : MonoBehaviour
     {
         if (context.performed)
         {
-            if(selectedFloorIndex > 0)
+            if(selectorCanMove == true)
             {
-                selectedFloorIndex--;
-            }
-            else
-            {
-                selectedFloorIndex = 2;
-            }
-            Debug.Log("Selected floor: " + selectedFloorIndex);
+                selectorImage.color = Color.black;
 
-            if(selectedFloorIndex == 0)
-            {
-                // Change the top and bottom properties
-                selector.offsetMin = new Vector2(selector.offsetMin.x, 139);
-                selector.offsetMax = new Vector2(selector.offsetMax.x, -2);
+                if (selectedFloorIndex < 2)
+                {
+                    selectedFloorIndex++;
+                }
+                else
+                {
+                    selectedFloorIndex = 0;
+                }
+                Debug.Log("Selected floor: " + selectedFloorIndex);
+
+                if (selectedFloorIndex == 0)
+                {
+                    // Change the top and bottom properties
+                    selector.offsetMin = new Vector2(selector.offsetMin.x, 139); //bottom
+                    selector.offsetMax = new Vector2(selector.offsetMax.x, -2); //-top
+                }
+                else if (selectedFloorIndex == 1)
+                {
+                    // Change the top and bottom properties
+                    selector.offsetMin = new Vector2(selector.offsetMin.x, 75); //bottom
+                    selector.offsetMax = new Vector2(selector.offsetMax.x, -65); //-top
+                }
+                else if (selectedFloorIndex == 2)
+                {
+                    // Change the top and bottom properties
+                    selector.offsetMin = new Vector2(selector.offsetMin.x, 9); //bottom
+                    selector.offsetMax = new Vector2(selector.offsetMax.x, -131); //-top
+                }
             }
-            else if (selectedFloorIndex == 1)
+        }
+    }
+
+    public void SelectOption(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if(selectorCanMove == true)
             {
-                // Change the top and bottom properties
-                selector.offsetMin = new Vector2(selector.offsetMin.x, 75);
-                selector.offsetMax = new Vector2(selector.offsetMax.x, 65);
-            }
-            else if (selectedFloorIndex == 2)
-            {
-                // Change the top and bottom properties
-                selector.offsetMin = new Vector2(selector.offsetMin.x, 9);
-                selector.offsetMax = new Vector2(selector.offsetMax.x, 131);
+                selectorCanMove = false;
+                selectorImage.color = Color.red;
             }
         }
     }

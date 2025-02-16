@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectOption"",
+                    ""type"": ""Button"",
+                    ""id"": ""55557d8a-5e54-4d26-b133-c19e0807f2ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ChooseOption"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07f56e3b-feed-458e-a354-51f07185b696"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectOption"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -239,6 +259,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MouseClick = m_Player.FindAction("Mouse Click", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_ChooseOption = m_Player.FindAction("ChooseOption", throwIfNotFound: true);
+        m_Player_SelectOption = m_Player.FindAction("SelectOption", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -307,6 +328,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseClick;
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_ChooseOption;
+    private readonly InputAction m_Player_SelectOption;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -318,6 +340,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @ChooseOption => m_Wrapper.m_Player_ChooseOption;
+        public InputAction @SelectOption => m_Wrapper.m_Player_SelectOption;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -348,6 +371,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ChooseOption.started += instance.OnChooseOption;
             @ChooseOption.performed += instance.OnChooseOption;
             @ChooseOption.canceled += instance.OnChooseOption;
+            @SelectOption.started += instance.OnSelectOption;
+            @SelectOption.performed += instance.OnSelectOption;
+            @SelectOption.canceled += instance.OnSelectOption;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -373,6 +399,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ChooseOption.started -= instance.OnChooseOption;
             @ChooseOption.performed -= instance.OnChooseOption;
             @ChooseOption.canceled -= instance.OnChooseOption;
+            @SelectOption.started -= instance.OnSelectOption;
+            @SelectOption.performed -= instance.OnSelectOption;
+            @SelectOption.canceled -= instance.OnSelectOption;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -408,5 +437,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMouseClick(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnChooseOption(InputAction.CallbackContext context);
+        void OnSelectOption(InputAction.CallbackContext context);
     }
 }
