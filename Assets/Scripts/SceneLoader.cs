@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -9,12 +11,36 @@ public class SceneLoader : MonoBehaviour
     [Header("Insert name of scene to be loaded")]
     public string sceneName; // The name of the scene to load
     public GameObject LoadingScreen;
+
+
+    public Image image;
+    public Sprite[] LoadingImages;
+    private int currentSpriteIndex = 0;
+    private float timer = 0f;
+
+
     public TextMeshProUGUI progressText;
     public float loadingDelay;
 
     private void Start()
     {
         LoadingScreen.SetActive(false);
+    }
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+
+        if(image != null)
+        {
+            image.sprite = LoadingImages[currentSpriteIndex];
+
+            if (timer >= 5f)
+            {
+                timer = 0f;
+                currentSpriteIndex = (currentSpriteIndex + 1) % LoadingImages.Length;
+            }
+        }
     }
 
     // Start loading the scene asynchronously
@@ -45,6 +71,12 @@ public class SceneLoader : MonoBehaviour
 
             // Calculate the loading progress (asyncOperation.progress goes from 0 to 0.9)
             float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+
+            if(asyncOperation.allowSceneActivation == false)
+            {
+                //change images of loading screen
+
+            }
 
             // Update the progress text UI
             if (progressText != null)

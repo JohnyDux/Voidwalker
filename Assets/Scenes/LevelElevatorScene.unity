@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e20567573f6ce48a0ab70c1216a107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneToLoad: Game
+  sceneList: []
   levelsBoard: {fileID: 995454573}
   loadingScreen: {fileID: 1338163517}
   selectedFloorIndex: 0
