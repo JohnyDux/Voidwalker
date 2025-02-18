@@ -195,7 +195,7 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "",
                     "action": "ChooseOption",
                     "isComposite": false,
                     "isPartOfComposite": false

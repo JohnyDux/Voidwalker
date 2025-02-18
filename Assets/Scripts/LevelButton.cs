@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelButton : MonoBehaviour
 {
-    public Scene[] sceneList;
+    public List<string> sceneNameList;
 
     private PlayerInputActions inputActions;
     private bool clickInput;
@@ -59,40 +59,38 @@ public class LevelButton : MonoBehaviour
             {
                 selectorImage.color = Color.black;
 
-                if (selectedFloorIndex < 2)
+                if (selectedFloorIndex < 4)
                 {
                     selectedFloorIndex++;
                 }
                 else
                 {
-                    selectedFloorIndex = 0;
+                    selectedFloorIndex = 2;
                 }
                 Debug.Log("Selected floor: " + selectedFloorIndex);
 
                 //INSERIR INDEX CORRETO DAS CENAS
-                if (selectedFloorIndex == 0)
+                if (selectedFloorIndex == 2)
                 {
                     // Change the top and bottom properties
                     selector.offsetMin = new Vector2(selector.offsetMin.x, 139); //bottom
                     selector.offsetMax = new Vector2(selector.offsetMax.x, -2); //-top
                 }
                 //INSERIR INDEX CORRETO DAS CENAS
-                else if (selectedFloorIndex == 0)
+                else if (selectedFloorIndex == 3)
                 {
                     // Change the top and bottom properties
                     selector.offsetMin = new Vector2(selector.offsetMin.x, 75); //bottom
                     selector.offsetMax = new Vector2(selector.offsetMax.x, -65); //-top
                 }
                 //INSERIR INDEX CORRETO DAS CENAS
-                else if (selectedFloorIndex == 0)
+                else if (selectedFloorIndex == 4)
                 {
                     // Change the top and bottom properties
                     selector.offsetMin = new Vector2(selector.offsetMin.x, 9); //bottom
                     selector.offsetMax = new Vector2(selector.offsetMax.x, -131); //-top
                 }
             }
-
-            loadScene(sceneList[selectedFloorIndex].name);
         }
     }
 
@@ -104,6 +102,10 @@ public class LevelButton : MonoBehaviour
             {
                 selectorCanMove = false;
                 selectorImage.color = Color.red;
+            }
+            else if(selectorCanMove == false)
+            {
+                loadScene(sceneNameList[selectedFloorIndex]);
             }
         }
     }
