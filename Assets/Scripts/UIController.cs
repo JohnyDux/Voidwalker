@@ -17,8 +17,8 @@ public class UIController : MonoBehaviour
     private PlayerInputActions inputActions;
     private InputAction scrollAction;
 
-    [Header("Minimap")]
-    //Player Pos
+    [Header("MINIMAP")]
+    [Header("/Player Pos")]
     public Transform playerPos;
     public int currentPlayerFloor;
     public GameObject PlayerLocationSphere;
@@ -26,8 +26,6 @@ public class UIController : MonoBehaviour
     public float yPos;
     public float zPos;
 
-    [Header("MINIMAP")]
-    //Mouse Scroll
     [Header("/Camera Constraint")]
     public Vector3 originalCameraPosition;
     public float zOffset = 0f;
@@ -41,8 +39,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private Vector2 moveInput;
     public float camMoveSpeed;
 
-    public Vector3 targetPosition;
-
     [Header("/Scrolling Manager")]
     public float scrollSpeed = 1f; // Adjust this value to control the scroll sensitivity
     public float minOrthoSize = 1f; // Minimum orthographic size
@@ -53,6 +49,11 @@ public class UIController : MonoBehaviour
     public List<GameObject> FloorMaps;
     public List<GameObject> ActiveFloorImages;
     public List<GameObject> InactiveFloorImages;
+
+    [Header("/Destination Marker")]
+    public GameObject prefabToInstantiate;
+    public float markerScale;
+    public List<GameObject> markerList;
 
     private void Awake()
     {
@@ -174,6 +175,12 @@ public class UIController : MonoBehaviour
             {
                 ShowFloor(2);
             }
+
+            //Set Marker
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SetMarker();
+            }
         }
 
     }
@@ -253,6 +260,46 @@ public class UIController : MonoBehaviour
         else
         {
             PlayerLocationSphere.SetActive(true);
+        }
+    }
+
+    private void SetMarker()
+    {
+        Ray ray = mapCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.CompareTag("MapTrigger"))
+            {
+                //Delete previous marker
+                foreach(GameObject go in markerList)
+                {
+                    if (go != null)
+                    {
+                        Destroy(go);
+                    }
+                }
+
+                markerList.Clear();
+
+                Debug.Log("Hit trigger. Pos x:" + hit.transform.position.x + ", Pos y:" + (hit.transform.position.z));
+
+                Vector3 spawnPosition = new Vector3(hit.transform.position.x, -170f, hit.transform.position.z-20);
+
+                // Instantiate the prefab at the specified position and rotation.
+                GameObject instantiatedObject = Instantiate(prefabToInstantiate, spawnPosition, Quaternion.identity);
+                instantiatedObject.transform.localScale = new Vector3(markerScale, markerScale, markerScale); // Set the scale
+
+                //Optional:  Rename the instantiated object (useful for debugging or organization)
+                instantiatedObject.name = "Instantiated_" + prefabToInstantiate.name;
+
+                markerList.Add(instantiatedObject);
+            }
+        }
+        else
+        {
+            Debug.Log("No object hit");
         }
     }
 

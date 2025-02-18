@@ -93,7 +93,6 @@ MonoBehaviour:
   mapCamera: {fileID: 0}
   moveInput: {x: 0, y: 0}
   camMoveSpeed: 1
-  targetPosition: {x: 0, y: 0, z: 0}
   scrollSpeed: 0.05
   minOrthoSize: 1
   maxOrthoSize: 620
@@ -110,6 +109,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  prefabToInstantiate: {fileID: 4264870244535821586, guid: 6dd58ac709c601941ac7269670cad78f, type: 3}
+  markerScale: 4
 --- !u!136 &3879600591416167143
 CapsuleCollider:
   m_ObjectHideFlags: 0
