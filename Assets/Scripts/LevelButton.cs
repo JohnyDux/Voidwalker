@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class LevelButton : MonoBehaviour
 {
     public List<string> sceneNameList;
+    public UIController UI;
 
     private PlayerInputActions inputActions;
     private bool clickInput;
@@ -106,6 +107,7 @@ public class LevelButton : MonoBehaviour
             else if(selectorCanMove == false)
             {
                 loadScene(sceneNameList[selectedFloorIndex]);
+                UI.currentPlayerFloor = selectedFloorIndex;
             }
         }
     }

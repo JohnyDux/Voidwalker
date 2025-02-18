@@ -20,7 +20,8 @@ public class UIController : MonoBehaviour
     [Header("Minimap")]
     //Player Pos
     public Transform playerPos;
-    public Transform PlayerLocationSphere;
+    public int currentPlayerFloor;
+    public GameObject PlayerLocationSphere;
     public float xPos;
     public float yPos;
     public float zPos;
@@ -48,7 +49,7 @@ public class UIController : MonoBehaviour
     public float maxOrthoSize = 20f; // Maximum orthographic size
 
     [Header("/Floor Manager")]
-    public int currentFloor = 0;
+    public int currentMinimapFloor = 0;
     public List<GameObject> FloorMaps;
     public List<GameObject> ActiveFloorImages;
     public List<GameObject> InactiveFloorImages;
@@ -62,7 +63,7 @@ public class UIController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Confined;
         originalCameraPosition = mapCamera.transform.position;
-        ShowFloor(currentFloor);
+        ShowFloor(currentMinimapFloor);
     }
 
     private void OnEnable()
@@ -88,7 +89,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        PlayerLocationSphere.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
+        PlayerLocationSphere.transform.position = new Vector3(playerPos.position.x, yPos, playerPos.position.z);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -100,7 +101,7 @@ public class UIController : MonoBehaviour
             //Center on Player
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                mapCamera.transform.position = new Vector3(PlayerLocationSphere.position.x, originalCameraPosition.y, PlayerLocationSphere.position.z);
+                mapCamera.transform.position = new Vector3(PlayerLocationSphere.transform.position.x, originalCameraPosition.y, PlayerLocationSphere.transform.position.z);
                 mapCamera.orthographicSize = 130.39f;
                 Debug.Log("Center camera");
             }
@@ -229,7 +230,7 @@ public class UIController : MonoBehaviour
                         ActiveFloorImages[j].SetActive(true);
                         FloorMaps[i].SetActive(true);
                         InactiveFloorImages[j].SetActive(false);
-                        currentFloor = i;
+                        currentMinimapFloor = i;
                     }
                     else
                     {
@@ -243,6 +244,15 @@ public class UIController : MonoBehaviour
                     Debug.LogError("RectTransform not found on Image at index " + j);
                 }
             }
+        }
+
+        if(currentMinimapFloor != currentPlayerFloor)
+        {
+            PlayerLocationSphere.SetActive(false);
+        }
+        else
+        {
+            PlayerLocationSphere.SetActive(true);
         }
     }
 
