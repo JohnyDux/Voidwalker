@@ -54,6 +54,9 @@ public class UIController : MonoBehaviour
     public GameObject prefabToInstantiate;
     public float markerScale;
     public List<GameObject> markerList;
+    public float raycastDistance;
+    public Vector3 rayOrigin;
+    public Vector3 rayDirection;
 
     private void Awake()
     {
@@ -265,10 +268,12 @@ public class UIController : MonoBehaviour
 
     private void SetMarker()
     {
-        Ray ray = mapCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = new Ray(rayOrigin, rayDirection);
+
+
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, raycastDistance))
         {
             if (hit.collider.CompareTag("MapTrigger"))
             {
@@ -305,6 +310,10 @@ public class UIController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Ray ray = new Ray(rayOrigin, rayDirection);
+
+        Debug.DrawRay(ray.origin, ray.origin + ray.direction * raycastDistance, Color.red);
+
         if (mapCamera == null) return;
 
         // Get the camera's viewport dimensions
@@ -315,7 +324,6 @@ public class UIController : MonoBehaviour
 
         // Calculate the edge rectangle dimensions
         float edgeWidth = Mathf.Abs(topRight.x - topLeft.x) * edgeThreshold;
-        float edgeHeight = Mathf.Abs(topLeft.y - bottomLeft.y) * edgeThreshold;
 
         // Define the corners of the rectangle
         Vector3 rectangleTopLeft = new Vector3(topLeft.x + edgeWidth, topLeft.y, topLeft.z);

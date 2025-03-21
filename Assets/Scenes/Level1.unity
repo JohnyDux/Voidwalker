@@ -3353,9 +3353,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443ee97a591331c4fa8266d2f239ac90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueBox: {fileID: 0}
-  nameTag: {fileID: 0}
-  dialogueTextBox: {fileID: 0}
+  dialogueBox: {fileID: 1939186746}
+  nameTag: {fileID: 1939186745}
+  dialogueTextBox: {fileID: 1939186745}
   dialogueLine: Hello Player, welcome to your journey!!
 --- !u!65 &1937480179
 BoxCollider:
@@ -3378,6 +3378,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7655587, y: 2, z: 1.3431536}
   m_Center: {x: 0, y: 0, z: -1.2597623}
+--- !u!114 &1939186745 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4299698468716502485, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1939186746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1700305835456401039, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1951118146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3386,9 +3402,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 996253495574051680, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3747279650391608678, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4334884580523218403, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485889258565027621, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7294703655696710508, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_Pivot.x
@@ -4376,6 +4404,34 @@ PrefabInstance:
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: markerScale
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayOrigin.x
+      value: -30.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayOrigin.y
+      value: -69.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayOrigin.z
+      value: -295.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayDirection.x
+      value: 20.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayDirection.y
+      value: -176.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: rayDirection.z
+      value: 193.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: raycastDistance
+      value: 402
       objectReference: {fileID: 0}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: PlayerLocationSphere
