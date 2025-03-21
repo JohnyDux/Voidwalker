@@ -4007,6 +4007,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &2097605678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2519265463613576351, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &543450653421447595
 Transform:
   m_ObjectHideFlags: 0
@@ -4394,13 +4399,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1951118147}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: mapMenu
+      value: 
+      objectReference: {fileID: 1951118154}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: mapCamera
       value: 
       objectReference: {fileID: 1598827770}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: pauseMenu
       value: 
-      objectReference: {fileID: 1951118154}
+      objectReference: {fileID: 2097605678}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: markerScale
       value: 4

@@ -18,6 +18,9 @@ public class UIController : MonoBehaviour
     private InputAction scrollAction;
 
     [Header("MINIMAP")]
+    bool mapActive;
+    public GameObject mapMenu;
+
     [Header("/Player Pos")]
     public Transform playerPos;
     public int currentPlayerFloor;
@@ -62,7 +65,9 @@ public class UIController : MonoBehaviour
     {
         inputActions = new PlayerInputActions();
         isPaused = false;
+        mapActive = false;
         pauseMenu.SetActive(false);
+        mapMenu.SetActive(false);
         hud.SetActive(true);
 
         Cursor.lockState = CursorLockMode.Confined;
@@ -100,7 +105,12 @@ public class UIController : MonoBehaviour
             OnPause();
         }
 
-        if (isPaused == true)
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            OnMap();
+        }
+
+        if (mapActive == true)
         {
             //Center on Player
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -190,7 +200,7 @@ public class UIController : MonoBehaviour
 
     private void MoveCamera(Vector3 direction)
     {
-        if (isPaused == true)
+        if (mapActive == true)
         {
             mapCamera.transform.Translate(camMoveSpeed * direction);  
         }
@@ -201,14 +211,29 @@ public class UIController : MonoBehaviour
         isPaused = !isPaused;
         Time.timeScale = isPaused ? 0 : 1;
 
-        mapCamera.transform.position = originalCameraPosition;
-
         bool check1 = isPaused ? true : false;
         pauseMenu.SetActive(check1);
+        mapMenu.SetActive(check1);
         hud.SetActive(!check1);
         Cursor.visible = check1;
 
         CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.lockState = lockMode;
+    }
+
+    private void OnMap()
+    {
+        mapActive = !mapActive;
+        Time.timeScale = isPaused ? 0 : 1;
+
+        mapCamera.transform.position = originalCameraPosition;
+
+        bool check1 = mapActive ? true : false;
+        mapMenu.SetActive(check1);
+        hud.SetActive(!check1);
+        Cursor.visible = check1;
+
+        CursorLockMode lockMode = mapActive ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.lockState = lockMode;
     }
 
