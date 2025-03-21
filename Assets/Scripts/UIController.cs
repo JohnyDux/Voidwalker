@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
     public GameObject hud;
 
-    [Header("Pause")]
+    [Header("PAUSE")]
     public bool isPaused;
     public GameObject pauseMenu;
+    public GameObject selector;
+    public List<GameObject> optionPos;
+    public int currentOptionIndex = 0;
+    [SerializeField] GameObject loadingScreen;
 
-    [Header("Input")]
     private PlayerInputActions inputActions;
     private InputAction scrollAction;
 
     [Header("MINIMAP")]
-    bool mapActive;
     public GameObject mapMenu;
+    bool mapActive;
+    
 
     [Header("/Player Pos")]
     public Transform playerPos;
@@ -196,6 +201,47 @@ public class UIController : MonoBehaviour
             }
         }
 
+        if(isPaused == true)
+        {
+            //Change between options
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                optionPos[currentOptionIndex].SetActive(false);
+
+                currentOptionIndex = (currentOptionIndex + 1) % optionPos.Count;
+
+                optionPos[currentOptionIndex].SetActive(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                optionPos[currentOptionIndex].SetActive(false);
+               
+                currentOptionIndex = (currentOptionIndex - 1 + optionPos.Count) % optionPos.Count;
+
+                optionPos[currentOptionIndex].SetActive(true);
+            }
+
+            //Select options
+            if (Input.GetKeyDown(KeyCode.Return)){
+                //Resume - index 0
+                if (currentOptionIndex == 0)
+                {
+                    OnPause();
+                }
+                //Exit to Main Menu - index 1
+                else if(currentOptionIndex == 1)
+                {
+                    loadScene("Menu");
+                }
+                //Quit - index 2
+                else if(currentOptionIndex == 2)
+                {
+                    Application.Quit();
+                }
+            }
+        }
+
     }
 
     private void MoveCamera(Vector3 direction)
@@ -331,6 +377,16 @@ public class UIController : MonoBehaviour
         {
             Debug.Log("No object hit");
         }
+    }
+
+    void loadScene(string newScene)
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        loadingScreen.SetActive(true);
+
+        SceneManager.LoadSceneAsync(newScene);
+        SceneManager.UnloadSceneAsync(currentScene);
     }
 
     private void OnDrawGizmos()

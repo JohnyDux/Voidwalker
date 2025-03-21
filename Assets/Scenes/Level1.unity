@@ -376,6 +376,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &111121623 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5388919040300010464, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &117794713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,6 +1681,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1021235162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6764574964362471717, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1062903703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1974,6 +1984,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.3119917, y: 1.0687976, z: 3.247404}
   m_Center: {x: 0.000000834465, y: -0.000000029802322, z: 0.000000059604645}
+--- !u!1 &1199021547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101148704373877559, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1204971775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3410,12 +3425,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4232333680732529256, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4334884580523218403, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5485889258565027621, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6764574964362471717, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7294703655696710508, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
@@ -3699,6 +3722,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1990795540 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4232333680732529256, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2008989230
 GameObject:
   m_ObjectHideFlags: 0
@@ -4403,6 +4431,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1951118154}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: selector
+      value: 
+      objectReference: {fileID: 1021235162}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: mapCamera
       value: 
       objectReference: {fileID: 1598827770}
@@ -4427,6 +4459,10 @@ PrefabInstance:
       value: -295.7
       objectReference: {fileID: 0}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 1199021547}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: rayDirection.x
       value: 20.3
       objectReference: {fileID: 0}
@@ -4447,6 +4483,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 53639872}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: optionPos.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: FloorMaps.Array.data[0]
       value: 
       objectReference: {fileID: 843348482}
@@ -4458,6 +4498,18 @@ PrefabInstance:
       propertyPath: FloorMaps.Array.data[2]
       value: 
       objectReference: {fileID: 1828668305}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: optionPos.Array.data[0]
+      value: 
+      objectReference: {fileID: 111121623}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: optionPos.Array.data[1]
+      value: 
+      objectReference: {fileID: 1021235162}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: optionPos.Array.data[2]
+      value: 
+      objectReference: {fileID: 1990795540}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: ActiveFloorImages.Array.data[0]
       value: 
