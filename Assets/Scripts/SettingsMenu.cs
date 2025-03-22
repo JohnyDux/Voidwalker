@@ -8,8 +8,11 @@ using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
+    public Texture2D mouseCursor;
+
     public RectTransform content;
     public GameObject settingsMenu;
+    public SettingsSideBar settingsSideBar;
     float startY;
 
     float minY; // Minimum Y position
@@ -41,6 +44,10 @@ public class SettingsMenu : MonoBehaviour
         valueText[1].text = currentMusicVolume.ToString();
         valueText[2].text = currentSoundFXVolume.ToString();
         valueText[3].text = currentAmbientNoiseVolume.ToString();
+
+        Cursor.SetCursor(mouseCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -62,6 +69,7 @@ public class SettingsMenu : MonoBehaviour
         Vector2 newPos = content.anchoredPosition;
         newPos.y = startY;
         content.anchoredPosition = newPos;
+        settingsSideBar.GameBtnClick();
         settingsMenu.SetActive(true);
     }
 

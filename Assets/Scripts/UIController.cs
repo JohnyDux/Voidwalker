@@ -10,6 +10,8 @@ public class UIController : MonoBehaviour
 {
     public GameObject hud;
 
+    public Texture2D mouseCursor;
+
     [Header("PAUSE")]
     public bool isPaused;
     public GameObject pauseMenu;
@@ -75,7 +77,10 @@ public class UIController : MonoBehaviour
         mapMenu.SetActive(false);
         hud.SetActive(true);
 
+        Cursor.SetCursor(mouseCursor, Vector2.zero, CursorMode.Auto);
+
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
         originalCameraPosition = mapCamera.transform.position;
         ShowFloor(currentMinimapFloor);
     }
@@ -261,10 +266,8 @@ public class UIController : MonoBehaviour
         pauseMenu.SetActive(check1);
         mapMenu.SetActive(check1);
         hud.SetActive(!check1);
-        Cursor.visible = check1;
 
-        CursorLockMode lockMode = isPaused ? CursorLockMode.Confined : CursorLockMode.Locked;
-        Cursor.lockState = lockMode;
+        Cursor.visible = false;
     }
 
     private void OnMap()

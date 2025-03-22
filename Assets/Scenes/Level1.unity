@@ -4447,6 +4447,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
+      propertyPath: mouseCursor
+      value: 
+      objectReference: {fileID: 2800000, guid: 6c333bd5afc300049bc61b5b001677e9, type: 3}
+    - target: {fileID: 1089818358797656018, guid: 6b0e218bc511e664db0c07faa66fdd81, type: 3}
       propertyPath: rayOrigin.x
       value: -30.7
       objectReference: {fileID: 0}

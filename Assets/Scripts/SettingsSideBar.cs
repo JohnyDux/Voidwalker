@@ -5,19 +5,19 @@ using UnityEngine;
 public class SettingsSideBar : MonoBehaviour
 {
     [SerializeField] GameObject gameButtonGraphics;
-    [SerializeField] GameObject controlsButtonGraphics;
+    [SerializeField] GameObject creditsButtonGraphics;
     [SerializeField] GameObject displayButtonGraphics;
     [SerializeField] GameObject audioButtonGraphics;
     [SerializeField] GameObject keyBindingsButtonGraphics;
 
     [SerializeField] bool gameMenuActive;
-    [SerializeField] bool controlsMenuActive;
+    [SerializeField] bool creditsMenuActive;
     [SerializeField] bool displayMenuActive;
     [SerializeField] bool audioMenuActive;
     [SerializeField] bool keyBindingsMenuActive;
 
     [SerializeField] GameObject gameMenu;
-    [SerializeField] GameObject controlMenu;
+    [SerializeField] GameObject creditsMenu;
     [SerializeField] GameObject displayMenu;
     [SerializeField] GameObject audioMenu;
     [SerializeField] GameObject keyBindingsMenu;
@@ -28,14 +28,14 @@ public class SettingsSideBar : MonoBehaviour
         gameButtonGraphics.SetActive(true);
         gameMenuActive = true;
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
 
         //defines the remains to be false
-        controlsButtonGraphics.SetActive(false);
-        controlsMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         displayButtonGraphics.SetActive(false);
         displayMenuActive = false;
         audioButtonGraphics.SetActive(false);
@@ -51,8 +51,8 @@ public class SettingsSideBar : MonoBehaviour
         gameButtonGraphics.SetActive(gameMenuActive);
 
         //defines the remains to be false
-        controlsButtonGraphics.SetActive(false);
-        controlsMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         displayButtonGraphics.SetActive(false);
         displayMenuActive = false;
         audioButtonGraphics.SetActive(false);
@@ -61,7 +61,7 @@ public class SettingsSideBar : MonoBehaviour
         keyBindingsMenuActive = false;
 
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
@@ -71,21 +71,22 @@ public class SettingsSideBar : MonoBehaviour
 
     public void CntrlBtnClick()
     {
-        controlsMenuActive = true;
-        controlsButtonGraphics.SetActive(controlsMenuActive);
-        
+        keyBindingsMenuActive = true;
+        keyBindingsButtonGraphics.SetActive(keyBindingsMenuActive);
+
+
         //defines the remains to be false
         gameButtonGraphics.SetActive(false);
         gameMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         displayButtonGraphics.SetActive(false);
         displayMenuActive = false;
         audioButtonGraphics.SetActive(false);
         audioMenuActive = false;
-        keyBindingsButtonGraphics.SetActive(false);
-        keyBindingsMenuActive = false;
 
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
@@ -99,15 +100,15 @@ public class SettingsSideBar : MonoBehaviour
         //defines the remains to be false
         gameButtonGraphics.SetActive(false);
         gameMenuActive = false;
-        controlsButtonGraphics.SetActive(false);
-        controlsMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         audioButtonGraphics.SetActive(false);
         audioMenuActive = false;
         keyBindingsButtonGraphics.SetActive(false);
         keyBindingsMenuActive = false;
 
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
@@ -119,8 +120,8 @@ public class SettingsSideBar : MonoBehaviour
         audioButtonGraphics.SetActive(audioMenuActive);
 
         //defines the remains to be false
-        controlsButtonGraphics.SetActive(false);
-        controlsMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         displayButtonGraphics.SetActive(false);
         displayMenuActive = false;
         gameButtonGraphics.SetActive(false);
@@ -130,7 +131,7 @@ public class SettingsSideBar : MonoBehaviour
 
         
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
@@ -142,8 +143,8 @@ public class SettingsSideBar : MonoBehaviour
         keyBindingsButtonGraphics.SetActive(keyBindingsMenuActive);
 
         //defines the remains to be false
-        controlsButtonGraphics.SetActive(false);
-        controlsMenuActive = false;
+        creditsButtonGraphics.SetActive(false);
+        creditsMenuActive = false;
         displayButtonGraphics.SetActive(false);
         displayMenuActive = false;
         audioButtonGraphics.SetActive(false);
@@ -152,7 +153,29 @@ public class SettingsSideBar : MonoBehaviour
         gameMenuActive = false;
 
         gameMenu.SetActive(gameMenuActive);
-        controlMenu.SetActive(controlsMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
+        displayMenu.SetActive(displayMenuActive);
+        audioMenu.SetActive(audioMenuActive);
+        keyBindingsMenu.SetActive(keyBindingsMenuActive);
+    }
+
+    public void CreditsBtnClick()
+    {
+        creditsMenuActive = true;
+        creditsButtonGraphics.SetActive(creditsMenuActive);
+
+        //defines the remains to be false
+        keyBindingsButtonGraphics.SetActive(false);
+        keyBindingsMenuActive = false;
+        displayButtonGraphics.SetActive(false);
+        displayMenuActive = false;
+        audioButtonGraphics.SetActive(false);
+        audioMenuActive = false;
+        gameButtonGraphics.SetActive(false);
+        gameMenuActive = false;
+
+        gameMenu.SetActive(gameMenuActive);
+        creditsMenu.SetActive(creditsMenuActive);
         displayMenu.SetActive(displayMenuActive);
         audioMenu.SetActive(audioMenuActive);
         keyBindingsMenu.SetActive(keyBindingsMenuActive);
