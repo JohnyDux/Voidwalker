@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 30
   Speed: 0
-  jumpForce: 1000
+  jumpForce: 500
   groundCheck: {fileID: 4079915427982467115}
   groundMask:
     serializedVersion: 2
@@ -72,8 +72,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 0}
+  mouseCursor: {fileID: 0}
   isPaused: 0
   pauseMenu: {fileID: 0}
+  selector: {fileID: 0}
+  optionPos: []
+  currentOptionIndex: 0
+  loadingScreen: {fileID: 0}
+  mapMenu: {fileID: 0}
   playerPos: {fileID: 1345957836250995230}
   currentPlayerFloor: 0
   PlayerLocationSphere: {fileID: 0}
@@ -111,6 +117,10 @@ MonoBehaviour:
   - {fileID: 0}
   prefabToInstantiate: {fileID: 4264870244535821586, guid: 6dd58ac709c601941ac7269670cad78f, type: 3}
   markerScale: 4
+  markerList: []
+  raycastDistance: 0
+  rayOrigin: {x: 0, y: 0, z: 0}
+  rayDirection: {x: 0, y: 0, z: 0}
 --- !u!136 &3879600591416167143
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -130,10 +140,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.82014084
-  m_Height: 2.1186597
+  m_Radius: 0.88
+  m_Height: 2.48
   m_Direction: 1
-  m_Center: {x: 0, y: -0.36798015, z: -0.003678782}
+  m_Center: {x: 0, y: -0.18, z: -0.003678782}
 --- !u!54 &2319344062737352506
 Rigidbody:
   m_ObjectHideFlags: 0
