@@ -61,15 +61,14 @@ public class RebindManager : MonoBehaviour
         }
     }
 
-    private void OnRebindButtonClicked()
+    public void OnRebindButtonClicked()
     {
         // Change input field color to red and prompt the user
-        keyInputField.GetComponent<Image>().color = Color.red;
         keyInputField.text = "Press a key...";
         waitingForKey = true;
     }
 
-    private void OnResetButtonClicked()
+    public void OnResetButtonClicked()
     {
         // Reset the input field to the default keybind
         keyInputField.text = defaultKeyBind.ToUpper();

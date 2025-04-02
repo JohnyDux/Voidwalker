@@ -12,6 +12,10 @@ public class NpcInteractable : MonoBehaviour
     [TextArea(3, 10)]
     public string dialogueLine;
 
+    private void Start()
+    {
+        dialogueBox.SetActive(false);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -2769,6 +2769,17 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_ApplyBeforeBody: 0
+--- !u!114 &1575562123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1825316675464152384, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1598827767
 GameObject:
   m_ObjectHideFlags: 0
@@ -3370,7 +3381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBox: {fileID: 1939186746}
   nameTag: {fileID: 1939186745}
-  dialogueTextBox: {fileID: 1939186745}
+  dialogueTextBox: {fileID: 1575562123}
   dialogueLine: Hello Player, welcome to your journey!!
 --- !u!65 &1937480179
 BoxCollider:
@@ -3421,6 +3432,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2360427326250798033, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1119.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2360427326250798033, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -565.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924372265732723711, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -117
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924372265732723711, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 498
+      objectReference: {fileID: 0}
     - target: {fileID: 3747279650391608678, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -3433,9 +3460,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4927373283005195744, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -105.599976
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927373283005195744, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 355.39996
+      objectReference: {fileID: 0}
     - target: {fileID: 5485889258565027621, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185924089758757748, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -98.30001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185924089758757748, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 215.09998
       objectReference: {fileID: 0}
     - target: {fileID: 6764574964362471717, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       propertyPath: m_IsActive
@@ -3526,7 +3569,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4555839082054770232, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
