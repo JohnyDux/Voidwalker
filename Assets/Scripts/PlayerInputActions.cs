@@ -73,7 +73,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""InteractWithNpc"",
                     ""type"": ""Button"",
                     ""id"": ""1f29a9ea-cf18-43ce-92e4-fc18573406bf"",
                     ""expectedControlType"": ""Button"",
@@ -94,6 +94,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""SelectOption"",
                     ""type"": ""Button"",
                     ""id"": ""55557d8a-5e54-4d26-b133-c19e0807f2ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""50091f65-85d2-4d33-977b-e01b34c6120b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -207,7 +216,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""InteractWithNpc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -230,6 +239,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SelectOption"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e44a2d6c-09f3-46a7-bd09-eedd6911abe6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -257,9 +277,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("Mouse Position", throwIfNotFound: true);
         m_Player_MouseClick = m_Player.FindAction("Mouse Click", throwIfNotFound: true);
-        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
+        m_Player_InteractWithNpc = m_Player.FindAction("InteractWithNpc", throwIfNotFound: true);
         m_Player_ChooseOption = m_Player.FindAction("ChooseOption", throwIfNotFound: true);
         m_Player_SelectOption = m_Player.FindAction("SelectOption", throwIfNotFound: true);
+        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -326,9 +347,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_MouseClick;
-    private readonly InputAction m_Player_Select;
+    private readonly InputAction m_Player_InteractWithNpc;
     private readonly InputAction m_Player_ChooseOption;
     private readonly InputAction m_Player_SelectOption;
+    private readonly InputAction m_Player_Select;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -338,9 +360,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
-        public InputAction @Select => m_Wrapper.m_Player_Select;
+        public InputAction @InteractWithNpc => m_Wrapper.m_Player_InteractWithNpc;
         public InputAction @ChooseOption => m_Wrapper.m_Player_ChooseOption;
         public InputAction @SelectOption => m_Wrapper.m_Player_SelectOption;
+        public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -365,15 +388,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseClick.started += instance.OnMouseClick;
             @MouseClick.performed += instance.OnMouseClick;
             @MouseClick.canceled += instance.OnMouseClick;
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
+            @InteractWithNpc.started += instance.OnInteractWithNpc;
+            @InteractWithNpc.performed += instance.OnInteractWithNpc;
+            @InteractWithNpc.canceled += instance.OnInteractWithNpc;
             @ChooseOption.started += instance.OnChooseOption;
             @ChooseOption.performed += instance.OnChooseOption;
             @ChooseOption.canceled += instance.OnChooseOption;
             @SelectOption.started += instance.OnSelectOption;
             @SelectOption.performed += instance.OnSelectOption;
             @SelectOption.canceled += instance.OnSelectOption;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -393,15 +419,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseClick.started -= instance.OnMouseClick;
             @MouseClick.performed -= instance.OnMouseClick;
             @MouseClick.canceled -= instance.OnMouseClick;
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
+            @InteractWithNpc.started -= instance.OnInteractWithNpc;
+            @InteractWithNpc.performed -= instance.OnInteractWithNpc;
+            @InteractWithNpc.canceled -= instance.OnInteractWithNpc;
             @ChooseOption.started -= instance.OnChooseOption;
             @ChooseOption.performed -= instance.OnChooseOption;
             @ChooseOption.canceled -= instance.OnChooseOption;
             @SelectOption.started -= instance.OnSelectOption;
             @SelectOption.performed -= instance.OnSelectOption;
             @SelectOption.canceled -= instance.OnSelectOption;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -435,8 +464,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseClick(InputAction.CallbackContext context);
-        void OnSelect(InputAction.CallbackContext context);
+        void OnInteractWithNpc(InputAction.CallbackContext context);
         void OnChooseOption(InputAction.CallbackContext context);
         void OnSelectOption(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
 }

@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Select",
+                    "name": "InteractWithNpc",
                     "type": "Button",
                     "id": "1f29a9ea-cf18-43ce-92e4-fc18573406bf",
                     "expectedControlType": "Button",
@@ -72,6 +72,15 @@
                     "name": "SelectOption",
                     "type": "Button",
                     "id": "55557d8a-5e54-4d26-b133-c19e0807f2ff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "50091f65-85d2-4d33-977b-e01b34c6120b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -185,7 +194,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "InteractWithNpc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -208,6 +217,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectOption",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e44a2d6c-09f3-46a7-bd09-eedd6911abe6",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

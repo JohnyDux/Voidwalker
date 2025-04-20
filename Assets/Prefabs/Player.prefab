@@ -9,10 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1345957836250995230}
-  - component: {fileID: 2836268712693262865}
   - component: {fileID: 1089818358797656018}
-  - component: {fileID: 3879600591416167143}
-  - component: {fileID: 2319344062737352506}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -37,28 +34,6 @@ Transform:
   - {fileID: 4079915427982467115}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2836268712693262865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3092483837059544848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1421fc06f1e3048a8c022b40257579, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 30
-  Speed: 0
-  jumpForce: 500
-  groundCheck: {fileID: 4079915427982467115}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
-  cameraTransform: {fileID: 0}
-  isGrounded: 0
-  moveInput: {x: 0, y: 0}
 --- !u!114 &1089818358797656018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,56 +96,6 @@ MonoBehaviour:
   raycastDistance: 0
   rayOrigin: {x: 0, y: 0, z: 0}
   rayDirection: {x: 0, y: 0, z: 0}
---- !u!136 &3879600591416167143
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3092483837059544848}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.88
-  m_Height: 2.48
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.18, z: -0.003678782}
---- !u!54 &2319344062737352506
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3092483837059544848}
-  serializedVersion: 4
-  m_Mass: 70
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 1
 --- !u!1 &7074950156858393643
 GameObject:
   m_ObjectHideFlags: 0
