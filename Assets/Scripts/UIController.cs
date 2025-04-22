@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -19,9 +18,6 @@ public class UIController : MonoBehaviour
     public List<GameObject> optionPos;
     public int currentOptionIndex = 0;
     [SerializeField] GameObject loadingScreen;
-
-    private PlayerInputActions inputActions;
-    private InputAction scrollAction;
 
     [Header("MINIMAP")]
     public GameObject mapMenu;
@@ -70,7 +66,6 @@ public class UIController : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
         isPaused = false;
         mapActive = false;
         pauseMenu.SetActive(false);
@@ -83,27 +78,6 @@ public class UIController : MonoBehaviour
         Cursor.visible = false;
         originalCameraPosition = mapCamera.transform.position;
         ShowFloor(currentMinimapFloor);
-    }
-
-    private void OnEnable()
-    {
-        inputActions.Player.Enable();
-
-        //Scroll
-        scrollAction = inputActions.FindAction("Scroll");
-        scrollAction.Enable();
-        scrollAction.performed += OnScroll;
-        scrollAction.canceled += OnScroll;
-    }
-
-    private void OnDisable()
-    {
-        // Scroll
-        scrollAction.performed -= OnScroll;
-        scrollAction.canceled -= OnScroll;
-        scrollAction.Disable();
-
-        inputActions.Player.Disable();
     }
 
     private void Update()
@@ -286,12 +260,12 @@ public class UIController : MonoBehaviour
         Cursor.lockState = lockMode;
     }
 
-    private void OnScroll(InputAction.CallbackContext context)
+    private void OnScroll()
     {
         if (isPaused == true)
         {
             // Read the scroll value
-            Vector2 scrollInput = context.ReadValue<Vector2>();
+            Vector2 scrollInput = Input.mouseScrollDelta;
 
             // Adjust the orthographic size based on the scroll input
             mapCamera.orthographicSize -= scrollInput.y * scrollSpeed;

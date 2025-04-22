@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class LevelButton : MonoBehaviour
 {
     public List<string> sceneNameList;
     public UIController UI;
-
-    private PlayerInputActions inputActions;
-    private bool clickInput;
-    private float chooseInput;
 
     [SerializeField] GameObject levelsBoard;
     [SerializeField] GameObject loadingScreen;
@@ -23,40 +18,16 @@ public class LevelButton : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
         loadingScreen.SetActive(false);
         levelsBoard.SetActive(false);
         selectorImage.color = Color.black;
         selectorCanMove = true;
     }
 
-    private void OnEnable()
-    {
-        inputActions.Player.ChooseOption.performed += ChooseFloor;
-        inputActions.Player.SelectOption.performed += SelectOption;
-        inputActions.Player.Enable();
-        inputActions.Player.Select.performed += OnLoad;
-    }
 
-    private void OnDisable()
+    public void ChooseFloor()
     {
-        inputActions.Player.Select.performed -= OnLoad;
-        inputActions.Player.ChooseOption.performed -= ChooseFloor;
-        inputActions.Player.SelectOption.performed -= SelectOption;
-        inputActions.Player.Disable();
-    }
-
-    void OnLoad(InputAction.CallbackContext context)
-    {
-        clickInput = context.ReadValueAsButton();
-    }
-
-
-    public void ChooseFloor(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if(selectorCanMove == true)
+        if(selectorCanMove == true)
             {
                 selectorImage.color = Color.black;
 
@@ -92,24 +63,20 @@ public class LevelButton : MonoBehaviour
                     selector.offsetMax = new Vector2(selector.offsetMax.x, -131); //-top
                 }
             }
-        }
     }
 
-    public void SelectOption(InputAction.CallbackContext context)
+    public void SelectOption()
     {
-        if (context.performed)
-        {
-            if(selectorCanMove == true)
+        if(selectorCanMove == true)
             {
                 selectorCanMove = false;
                 selectorImage.color = Color.red;
             }
-            else if(selectorCanMove == false)
+        else if(selectorCanMove == false)
             {
                 loadScene(sceneNameList[selectedFloorIndex]);
                 UI.currentPlayerFloor = selectedFloorIndex;
             }
-        }
     }
 
     void loadScene(string newScene)
@@ -127,16 +94,6 @@ public class LevelButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             levelsBoard.SetActive(true);
-
-            if (clickInput == true)
-            {
-                
-            }
-
-            if(chooseInput > 0)
-            {
-                selectedFloorIndex = (int)chooseInput;
-            }
         }
     }
 }

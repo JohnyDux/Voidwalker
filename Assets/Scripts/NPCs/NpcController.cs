@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class NpcInteractable : MonoBehaviour
+public class NpcController : MonoBehaviour
 {
     public GameObject dialogueBox;
     public TextMeshProUGUI nameTag;

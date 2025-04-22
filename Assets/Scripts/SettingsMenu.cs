@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 using TMPro;
 
 public class SettingsMenu : MonoBehaviour
@@ -26,10 +25,6 @@ public class SettingsMenu : MonoBehaviour
     float currentMusicVolume;
     float currentSoundFXVolume;
     float currentAmbientNoiseVolume;
-
-    [Header("Key Bindings")]
-    public InputActionAsset inputActions;
-    public InputAction moveAction;
 
     private void Start()
     {
@@ -181,21 +176,5 @@ public class SettingsMenu : MonoBehaviour
     public void SetQuality(int count)
     {
         QualitySettings.SetQualityLevel(count);
-    }
-
-    private void OnEnable()
-    {
-        // Find the Move action within the Player action map
-        var playerActionMap = inputActions.FindActionMap("Player");
-        moveAction = playerActionMap.FindAction("Move");
-
-        // Enable the action
-        moveAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        // Disable the action
-        moveAction.Disable();
     }
 }

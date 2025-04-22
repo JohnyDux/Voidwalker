@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -15,25 +14,10 @@ public class RebindManager : MonoBehaviour
 
 
     private bool waitingForKey;
-    private InputAction inputAction;
 
     private void Start()
     {
-        // Get the InputAction
-        var inputActions = new PlayerInputActions(); // Replace with your InputAction setup
-        inputAction = inputActions.FindAction(actionName);
-
         // Initialize the UI with the current binding
-        if (inputAction != null && inputAction.bindings.Count > bindingIndex)
-        {
-            string currentBindingPath = inputAction.bindings[bindingIndex].effectivePath;
-            keyInputField.text = ExtractKeyFromPath(currentBindingPath).ToUpper();
-        }
-        else
-        {
-            keyInputField.text = defaultKeyBind.ToUpper();
-        }
-
         keyInputField.GetComponent<Image>().color = Color.white;
 
         // Add listeners to buttons
@@ -79,20 +63,12 @@ public class RebindManager : MonoBehaviour
 
     private void UpdateKeyBinding(string newKey)
     {
-        if (inputAction != null && inputAction.bindings.Count > bindingIndex)
-        {
-            var newPath = $"<Keyboard>/{newKey.ToLower()}";
-            inputAction.ApplyBindingOverride(bindingIndex, newPath);
-            keyInputField.text = newKey;
-        }
+
     }
 
     private void ResetKeyBinding()
     {
-        if (inputAction != null && inputAction.bindings.Count > bindingIndex)
-        {
-            inputAction.RemoveBindingOverride(bindingIndex);
-        }
+
     }
 
     private string ExtractKeyFromPath(string path)

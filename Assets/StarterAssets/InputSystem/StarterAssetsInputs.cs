@@ -1,7 +1,4 @@
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace StarterAssets
 {
@@ -21,27 +18,27 @@ namespace StarterAssets
 		public bool cursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+		public void OnMove(Vector2 value)
 		{
-			MoveInput(value.Get<Vector2>());
+			MoveInput(value);
 		}
 
-		public void OnLook(InputValue value)
+		public void OnLook(Vector2 value)
 		{
 			if(cursorInputForLook)
 			{
-				LookInput(value.Get<Vector2>());
+				LookInput(value);
 			}
 		}
 
-		public void OnJump(InputValue value)
+		public void OnJump(bool value)
 		{
-			JumpInput(value.isPressed);
+			JumpInput(value);
 		}
 
-		public void OnSprint(InputValue value)
+		public void OnSprint(bool value)
 		{
-			SprintInput(value.isPressed);
+			SprintInput(value);
 		}
 #endif
 
