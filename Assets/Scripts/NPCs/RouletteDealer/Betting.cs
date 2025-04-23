@@ -16,7 +16,7 @@ public class Betting : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         hasBet = false;
-        nameTag.text = animator.GetComponentInParent<GameObject>().name;
+        nameTag.text = "Dealer";
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

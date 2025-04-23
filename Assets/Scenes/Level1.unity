@@ -16189,6 +16189,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559770393}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &571093803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4232333680732529256, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &574984804
 Mesh:
   m_ObjectHideFlags: 0
@@ -25560,6 +25565,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1172269669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5388919040300010464, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1227242313
 GameObject:
   m_ObjectHideFlags: 0
@@ -30624,6 +30634,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383381691}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1390933050 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6764574964362471717, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1951118146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1406034662
 GameObject:
   m_ObjectHideFlags: 0
@@ -43832,6 +43847,22 @@ PrefabInstance:
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 1937706375}
+    - target: {fileID: 7224516856854768680, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: optionPos.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224516856854768680, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: optionPos.Array.data[0]
+      value: 
+      objectReference: {fileID: 1172269669}
+    - target: {fileID: 7224516856854768680, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: optionPos.Array.data[1]
+      value: 
+      objectReference: {fileID: 1390933050}
+    - target: {fileID: 7224516856854768680, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: optionPos.Array.data[2]
+      value: 
+      objectReference: {fileID: 571093803}
     - target: {fileID: 7977535435409792496, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: cameraTransform
       value: 

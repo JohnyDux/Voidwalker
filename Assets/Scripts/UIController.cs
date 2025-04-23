@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class UIController : MonoBehaviour
 {
@@ -65,7 +66,14 @@ public class UIController : MonoBehaviour
             {
                 optionPos[currentOptionIndex].SetActive(false);
 
-                currentOptionIndex = (currentOptionIndex + 1) % optionPos.Count;
+                if(currentOptionIndex < optionPos.Count - 1)
+                {
+                    currentOptionIndex = currentOptionIndex + 1;
+                }
+                else
+                {
+                    currentOptionIndex = 0;
+                }
 
                 optionPos[currentOptionIndex].SetActive(true);
             }
@@ -73,11 +81,18 @@ public class UIController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 optionPos[currentOptionIndex].SetActive(false);
-               
-                currentOptionIndex = (currentOptionIndex - 1 + optionPos.Count) % optionPos.Count;
-
+                if (currentOptionIndex > 0)
+                {
+                    currentOptionIndex = currentOptionIndex - 1;
+                }
+                else if (currentOptionIndex < 0)
+                {
+                    currentOptionIndex = optionPos.Count-1;
+                }
                 optionPos[currentOptionIndex].SetActive(true);
             }
+
+            Debug.Log(currentOptionIndex);
 
             //Select options
             if (Input.GetKeyDown(KeyCode.Return)){
@@ -95,6 +110,7 @@ public class UIController : MonoBehaviour
                 else if(currentOptionIndex == 2)
                 {
                     Application.Quit();
+                    EditorApplication.ExitPlaymode();
                 }
             }
         }
