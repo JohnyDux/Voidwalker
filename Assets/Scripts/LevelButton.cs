@@ -75,7 +75,6 @@ public class LevelButton : MonoBehaviour
         else if(selectorCanMove == false)
             {
                 loadScene(sceneNameList[selectedFloorIndex]);
-                UI.currentPlayerFloor = selectedFloorIndex;
             }
     }
 

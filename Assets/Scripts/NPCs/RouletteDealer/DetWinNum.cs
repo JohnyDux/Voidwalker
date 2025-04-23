@@ -2,14 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DetWinNum : StateMachineBehaviour
 {
-    int winNumber;
+    public int winNum;
+    public TMP_Text dialogueTextBox;
     float timeToCalculate = 5f;
+
+    RouletteController roulette;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        winNumber = Random.Range(0, 36);
+        roulette = FindObjectOfType<RouletteController>();
+
+        winNum = Random.Range(0, 36);
+        roulette.winNumber = winNum;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -17,7 +24,6 @@ public class DetWinNum : StateMachineBehaviour
         timeToCalculate = -Time.deltaTime;
         if (timeToCalculate <= 0)
         {
-            Debug.Log("Win Number: " + winNumber);
             animator.SetBool("winBetsDetermined", true);
         }
     }

@@ -217,6 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461a4d519648353488dc20b07914fdd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winNum: 0
+  dialogueTextBox: {fileID: 3064257583494493780, guid: 9a6ea9bad8b0a084e8c4e10901216634, type: 3}
 --- !u!114 &-1596541839895112784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,7 +231,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d0ca7b4cda56640832bb1ae2589cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputActionAsset: {fileID: -944628639613478452, guid: c609616f6dc8cbc4db41af35eab81d7a, type: 3}
+  betValue: 0
+  player: {fileID: 1995350198993777949, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+  dialogueBox: {fileID: 5919653510643178538, guid: fdee1af7479621a4296a25726e975b4d, type: 3}
+  nameTag: {fileID: 2444941717794449541, guid: 2263a1b168305d74b8086736a4e25b4d, type: 3}
+  dialogueTextBox: {fileID: 5650525808684534229, guid: 9a6ea9bad8b0a084e8c4e10901216634, type: 3}
 --- !u!1101 &-577011791780783603
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -388,6 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3318efef27f85a478a6580474582144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1995350198993777949, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
 --- !u!1102 &5989345735698953503
 AnimatorState:
   serializedVersion: 6

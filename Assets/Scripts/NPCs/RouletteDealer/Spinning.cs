@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Spinning : StateMachineBehaviour
 {
@@ -11,7 +12,6 @@ public class Spinning : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         isSpinning = true;
-        Debug.Log("Ball is Spinning");
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -21,7 +21,6 @@ public class Spinning : StateMachineBehaviour
         {
             isSpinning = false;
             animator.SetBool("ballSettled", true);
-            Debug.Log("Ball Settled");
         }
     }
 
