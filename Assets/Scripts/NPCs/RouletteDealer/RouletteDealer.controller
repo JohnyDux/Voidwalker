@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winNum: 0
-  dialogueTextBox: {fileID: 3064257583494493780, guid: 9a6ea9bad8b0a084e8c4e10901216634, type: 3}
+  dialogueTextBox: {fileID: 0}
 --- !u!114 &-1596541839895112784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -353,7 +353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85cbf412ce66f647983b71ce5ee6ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToSpin: 3
+  timeToSpin: 15
+  ballPrefab: {fileID: 8359346449505437255, guid: 6b8138774301a464d934094f8326f953, type: 3}
+  ballSpawnPos: {fileID: 6179208419417413101, guid: 15f107c0add9aba45bccc7646e668168, type: 3}
+  ballController: {fileID: 1366923605716406367, guid: 6b8138774301a464d934094f8326f953, type: 3}
+  ballRollForce: 30
 --- !u!1102 &4394474505189732136
 AnimatorState:
   serializedVersion: 6
@@ -395,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1995350198993777949, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+  Prize: 100
 --- !u!1102 &5989345735698953503
 AnimatorState:
   serializedVersion: 6
