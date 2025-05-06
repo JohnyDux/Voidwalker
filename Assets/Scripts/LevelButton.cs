@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class LevelButton : MonoBehaviour
 {
     public List<string> sceneNameList;
-    public UIController UI;
 
     [SerializeField] GameObject levelsBoard;
     [SerializeField] GameObject loadingScreen;
