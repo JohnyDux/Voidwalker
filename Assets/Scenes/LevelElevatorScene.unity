@@ -4700,6 +4700,10 @@ PrefabInstance:
       propertyPath: moneyTextElement
       value: 
       objectReference: {fileID: 1338163518}
+    - target: {fileID: 5057685913805850323, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: m_Name
+      value: Mesh
+      objectReference: {fileID: 0}
     - target: {fileID: 7224516856854768680, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: hud
       value: 
@@ -4732,6 +4736,10 @@ PrefabInstance:
       propertyPath: optionPos.Array.data[2]
       value: 
       objectReference: {fileID: 1338163519}
+    - target: {fileID: 7977535435409792496, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: characterMesh
+      value: 
+      objectReference: {fileID: 1873257577}
     - target: {fileID: 7977535435409792496, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: cameraTransform
       value: 
@@ -5801,6 +5809,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &1873257577 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5583146487012220009, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+  m_PrefabInstance: {fileID: 469603422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2010972516
 GameObject:
   m_ObjectHideFlags: 0
