@@ -20,26 +20,6 @@ public class UIController : MonoBehaviour
     public int currentOptionIndex = 0;
     [SerializeField] GameObject loadingScreen;
 
-    [Header("MINIMAP")]
-    
-
-    [Header("/Player Pos")]
-
-
-    [Header("/Camera Constraint")]
-
-
-    [Header("/Scrolling Manager")]
-    public float scrollSpeed = 1f; // Adjust this value to control the scroll sensitivity
-    public float minOrthoSize = 1f; // Minimum orthographic size
-    public float maxOrthoSize = 20f; // Maximum orthographic size
-
-    [Header("/Floor Manager")]
-    public int currentMinimapFloor = 0;
-    public List<GameObject> FloorMaps;
-    public List<GameObject> ActiveFloorImages;
-    public List<GameObject> InactiveFloorImages;
-
     private void Awake()
     {
         isPaused = false;
@@ -128,7 +108,6 @@ public class UIController : MonoBehaviour
 
         Cursor.visible = false;
     }
-
     void loadScene(string newScene)
     {
         string currentScene = SceneManager.GetActiveScene().name;

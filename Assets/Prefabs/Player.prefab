@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7977535435409792496}
   - component: {fileID: 1995350198993777949}
   - component: {fileID: 7224516856854768680}
+  - component: {fileID: 891395360752646279}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -114,13 +115,26 @@ MonoBehaviour:
   optionPos: []
   currentOptionIndex: 0
   loadingScreen: {fileID: 0}
-  scrollSpeed: 1
-  minOrthoSize: 1
-  maxOrthoSize: 20
-  currentMinimapFloor: 0
-  FloorMaps: []
-  ActiveFloorImages: []
-  InactiveFloorImages: []
+--- !u!114 &891395360752646279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8493088760030058758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75e64c0a79226046b477d40d5f4e6f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldSize: {x: 0, y: 0}
+  fullScreenDimensions: {x: 1000, y: 1000}
+  zoomSpeed: 0.1
+  maxZoom: 10
+  minZoom: 1
+  scrollViewRectTransform: {fileID: 0}
+  contentRectTransform: {fileID: 0}
+  minimapIconPrefab: {fileID: 0}
 --- !u!1001 &5400356205642660738
 PrefabInstance:
   m_ObjectHideFlags: 0
