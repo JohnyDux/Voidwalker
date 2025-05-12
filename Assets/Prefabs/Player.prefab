@@ -127,14 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b75e64c0a79226046b477d40d5f4e6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSize: {x: 0, y: 0}
-  fullScreenDimensions: {x: 1000, y: 1000}
-  zoomSpeed: 0.1
-  maxZoom: 10
-  minZoom: 1
-  scrollViewRectTransform: {fileID: 0}
-  contentRectTransform: {fileID: 0}
-  minimapIconPrefab: {fileID: 0}
+  playerTransform: {fileID: 0}
+  cursorRect: {fileID: 0}
+  multiplierX: -1.52
+  multiplierY: -1.74
+  offsetX: -45.2
+  offsetY: -36.9
+  map: {fileID: 0}
+  mapOn: 1
 --- !u!1001 &5400356205642660738
 PrefabInstance:
   m_ObjectHideFlags: 0

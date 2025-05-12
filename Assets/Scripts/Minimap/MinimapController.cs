@@ -5,13 +5,11 @@ using UnityEngine;
 public class MinimapController : MonoBehaviour
 {
     public Transform playerTransform;
-    public RectTransform cursorRect; // Reference to the RectTransform of the cursor
+    public RectTransform playerIcon; // Reference to the RectTransform of the cursor
+    public float minimapScale = 0.1f;
 
-    float zoom;
-    public float multiplierX;
-    public float multiplierY;
-    public float offsetX;
-    public float offsetY;
+    public float iconOffsetX;
+    public float iconOffsetY;
 
     public GameObject map;
     public bool mapOn;
@@ -19,7 +17,6 @@ public class MinimapController : MonoBehaviour
     private void Start()
     {
         mapOn = false;
-        zoom = Input.GetAxis("Mouse ScrollWheel");
     }
 
     private void Update()
@@ -42,24 +39,17 @@ public class MinimapController : MonoBehaviour
         if (mapOn)
         {
             WorldPositionToMapPosition();
-            ZoomMap(zoom);
         }
-    }
-
-    private void ZoomMap(float zoom)
-    {
-
     }
     private void WorldPositionToMapPosition()
     {
         // Get the player's position
-        Vector3 worldPosition = playerTransform.position;
+        Vector3 playerPosition = playerTransform.position;
 
-        // Scale the player's position to fit the minimap
-        float xUIPosition = worldPosition.x * -multiplierX;
-        float yUIPosition = worldPosition.z * -multiplierY;
+        // Convert world position to minimap position
+        Vector2 minimapPosition = new Vector2(playerPosition.x * minimapScale + iconOffsetX, playerPosition.z * minimapScale + iconOffsetY);
 
-        // Set the minimap's position
-        cursorRect.localPosition = new Vector3(xUIPosition + offsetX, yUIPosition + offsetY, 0);
+        // Update the player icon's position
+        playerIcon.anchoredPosition = minimapPosition;
     }
 }
