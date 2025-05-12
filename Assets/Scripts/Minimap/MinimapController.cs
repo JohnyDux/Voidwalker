@@ -14,9 +14,18 @@ public class MinimapController : MonoBehaviour
     public GameObject map;
     public bool mapOn;
 
+    public RectTransform mapSelectorPosition;
+    public float mapSelectorMoveSpeed;
+    private Vector2 targetPosition;
+    public GameObject mapMarker;
+    public bool markerOn;
+
     private void Start()
     {
         mapOn = false;
+        markerOn = false;
+
+        targetPosition = mapSelectorPosition.anchoredPosition;
     }
 
     private void Update()
@@ -39,6 +48,22 @@ public class MinimapController : MonoBehaviour
         if (mapOn)
         {
             WorldPositionToMapPosition();
+            MoveSelector();
+        }
+
+        mapMarker.SetActive(markerOn);
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (markerOn == false)
+            {
+                //ligar marker
+                markerOn = true;
+            }
+            else
+            {
+                markerOn = false;
+            }
         }
     }
     private void WorldPositionToMapPosition()
@@ -52,4 +77,30 @@ public class MinimapController : MonoBehaviour
         // Update the player icon's position
         playerIcon.anchoredPosition = minimapPosition;
     }
+
+    private void MoveSelector()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            mapSelectorPosition.anchoredPosition -= new Vector2(mapSelectorMoveSpeed * Time.deltaTime, 0);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            mapSelectorPosition.anchoredPosition += new Vector2(mapSelectorMoveSpeed * Time.deltaTime, 0);
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            mapSelectorPosition.anchoredPosition += new Vector2(0, mapSelectorMoveSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            mapSelectorPosition.anchoredPosition -= new Vector2(0, mapSelectorMoveSpeed * Time.deltaTime);
+        }
+    }
+
+    //private void SetMarker()
+    //{
+    //    markerPosition = 
+    //    Instantiate(mapMarker, markerPosition);
+    //}
 }

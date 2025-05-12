@@ -4485,6 +4485,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: mapMarker
+      value: 
+      objectReference: {fileID: 6289312437034902895, guid: f1d365383e888634f9084953695bd2df, type: 3}
+    - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: cursorRect
       value: 
       objectReference: {fileID: 359556063}
@@ -4516,6 +4520,10 @@ PrefabInstance:
       propertyPath: iconOffsetY
       value: -12.99
       objectReference: {fileID: 0}
+    - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: mapSelector
+      value: 
+      objectReference: {fileID: 6289312437034902895, guid: 03f839ea143d5c64e93750b53f5da427, type: 3}
     - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: minimapRect
       value: 
@@ -4557,6 +4565,10 @@ PrefabInstance:
       value: 0.61879
       objectReference: {fileID: 0}
     - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: mapSelectorPosition
+      value: 
+      objectReference: {fileID: 568227835}
+    - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: minimapPlayerCursor
       value: 
       objectReference: {fileID: 359556063}
@@ -4564,6 +4576,10 @@ PrefabInstance:
       propertyPath: contentRectTransform
       value: 
       objectReference: {fileID: 223372880}
+    - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
+      propertyPath: mapSelectorMoveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 891395360752646279, guid: 021ba180118f13b4f8ee5cc3cd007ca3, type: 3}
       propertyPath: fullScreenDimensions.x
       value: 1920
@@ -4768,6 +4784,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.7527869, y: 1.5673554, z: 3.0978673}
   m_Center: {x: 0.87639344, y: 0.28367764, z: 0}
+--- !u!224 &568227835 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1199125645961997066, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+  m_PrefabInstance: {fileID: 1338163516}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &649296362
 GameObject:
   m_ObjectHideFlags: 0
@@ -5288,6 +5309,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2508596927509341674, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
+    - {fileID: 7034363328019204231, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7294703655696710508, guid: e9e30dd888c3a834a8b64f0c04dfa74c, type: 3}
       insertIndex: -1
