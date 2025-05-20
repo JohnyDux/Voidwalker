@@ -21,6 +21,7 @@ public class UIController : MonoBehaviour
     public int currentOptionIndex = 0;
     [SerializeField] GameObject loadingScreen;
 
+    [Header("WEAPON")]
     public bool weaponActive;
     public bool weaponAiming;
     public int weaponIndex;
@@ -34,11 +35,15 @@ public class UIController : MonoBehaviour
 
     public CinemachineVirtualCamera virtualCamera;
 
+    public PlayerStats player;
+    public GameObject deathScreen;
+
     private void Awake()
     {
         isPaused = false;
         pauseMenu.SetActive(false);
         hud.SetActive(true);
+        deathScreen.SetActive(false);
 
         Cursor.SetCursor(mouseCursor, Vector2.zero, CursorMode.Auto);
 
@@ -53,7 +58,15 @@ public class UIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && isPaused == false)
         {
-            OnPause();
+            if(player.lifeValue > 0)
+            {
+                OnPause();
+            }
+
+            else if(player.lifeValue <= 0)
+            {
+                loadScene("Menu");
+            }
         }
 
         if(isPaused == true)
@@ -150,7 +163,13 @@ public class UIController : MonoBehaviour
         {
             WeaponIcon.GetComponent<Image>().enabled = true;
             bulletCountObject.SetActive(true);
-        }       
+        }
+
+        if(player.lifeValue <= 0)
+        {
+            deathScreen.SetActive(true);
+            Time.timeScale = 0f;
+        }
     }
 
     private void OnPause()
