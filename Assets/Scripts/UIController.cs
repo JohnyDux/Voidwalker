@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using Cinemachine;
 
 public class UIController : MonoBehaviour
 {
@@ -20,6 +21,19 @@ public class UIController : MonoBehaviour
     public int currentOptionIndex = 0;
     [SerializeField] GameObject loadingScreen;
 
+    public bool weaponActive;
+    public bool weaponAiming;
+    public int weaponIndex;
+    public List<Sprite> weaponUISprites;
+    public Image WeaponIcon;
+    public GameObject bulletCountObject;
+
+    public List<Sprite> crosshairUISprites;
+    public GameObject CrosshairGO;
+    public Image crosshairImage;
+
+    public CinemachineVirtualCamera virtualCamera;
+
     private void Awake()
     {
         isPaused = false;
@@ -30,6 +44,9 @@ public class UIController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+
+        weaponIndex = 0;
+        weaponActive = false;
     }
 
     private void Update()
@@ -95,6 +112,45 @@ public class UIController : MonoBehaviour
             }
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            aimWeapon();
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            aimWeapon();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (weaponActive)
+            {
+                changeWeapon();
+            }  
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (weaponActive == false)
+            {
+                weaponActive = true;
+            }
+            else
+            {
+                weaponActive = false;
+            }
+        }
+
+        if(weaponActive == false)
+        {
+            WeaponIcon.GetComponent<Image>().enabled = false;
+            bulletCountObject.SetActive(false);
+        }
+        else
+        {
+            WeaponIcon.GetComponent<Image>().enabled = true;
+            bulletCountObject.SetActive(true);
+        }       
     }
 
     private void OnPause()
@@ -116,5 +172,39 @@ public class UIController : MonoBehaviour
 
         SceneManager.LoadSceneAsync(newScene);
         SceneManager.UnloadSceneAsync(currentScene);
+    }
+
+    void changeWeapon()
+    {
+        weaponActive = true;
+
+        if (weaponIndex < weaponUISprites.Count-1)
+        {
+            weaponIndex++;
+        }
+        else
+        {
+            weaponIndex = 0;
+        }
+
+        WeaponIcon.sprite = weaponUISprites[weaponIndex];
+        crosshairImage.sprite = crosshairUISprites[weaponIndex];
+    }
+
+    void aimWeapon()
+    {
+        if (weaponActive)
+        {
+            if (weaponAiming == false)
+            {
+                weaponAiming = true;
+                CrosshairGO.SetActive(true);
+            }
+            else
+            {
+                weaponAiming = false;
+                CrosshairGO.SetActive(false);
+            }
+        }
     }
 }

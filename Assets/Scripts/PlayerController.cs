@@ -14,6 +14,11 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     public Vector3 moveDirection = Vector3.zero;
 
+    public int bulletCount;
+    public GameObject prefabShooting;
+    public RectTransform uICrosshair;
+    public UIController uIController;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
@@ -78,5 +83,39 @@ public class PlayerController : MonoBehaviour
 
         // Move the controller
         controller.Move(moveDirection * Time.deltaTime);
+
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ShootAtTarget();
+        }
+    }
+
+    void ShootAtTarget()
+    {
+        if(uIController.weaponActive == true && bulletCount > 0)
+        {
+            // Get the world position of the UI element
+            Vector3 worldPosition;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(uICrosshair, uICrosshair.position, Camera.main, out worldPosition);
+
+            // Create a ray from the camera to the world position
+            Ray ray = Camera.main.ScreenPointToRay(uICrosshair.position);
+            RaycastHit hit;
+
+            // Perform the raycast
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Calculate the position in front of the hit point
+                Vector3 spawnPosition = hit.point + hit.normal;
+
+                // Instantiate the prefab at the calculated position with no rotation
+                GameObject instantiatedPrefab = Instantiate(prefabShooting, spawnPosition, Quaternion.identity);
+
+                // Destroy the instantiated prefab after a delay
+                Destroy(instantiatedPrefab, 5);
+            }
+        }
     }
 }
