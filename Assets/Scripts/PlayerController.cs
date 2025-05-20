@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 10.0f; // Speed at which the character rotates
 
     private CharacterController controller;
-    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
 
     void Start()
     {

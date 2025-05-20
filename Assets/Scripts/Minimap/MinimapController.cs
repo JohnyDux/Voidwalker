@@ -5,6 +5,8 @@ using UnityEngine;
 public class MinimapController : MonoBehaviour
 {
     public Transform playerTransform;
+    public PlayerController playerController;
+
     public RectTransform playerIcon; // Reference to the RectTransform of the cursor
     public float minimapScale = 0.1f;
 
@@ -19,6 +21,8 @@ public class MinimapController : MonoBehaviour
     private Vector2 targetPosition;
     public GameObject mapMarker;
     public bool markerOn;
+
+    public GameObject hud;
 
     private void Start()
     {
@@ -47,8 +51,13 @@ public class MinimapController : MonoBehaviour
 
         if (mapOn)
         {
+            SwitchHUD(false);
             WorldPositionToMapPosition();
             MoveSelector();
+        }
+        else
+        {
+            SwitchHUD(true);
         }
 
         mapMarker.SetActive(markerOn);
@@ -66,6 +75,19 @@ public class MinimapController : MonoBehaviour
             }
         }
     }
+
+    void SwitchHUD(bool state)
+    {
+        if(state == false)
+        {
+            hud.SetActive(false);
+        }
+        else if (state == true)
+        {
+            hud.SetActive(true);
+        }
+    }
+
     private void WorldPositionToMapPosition()
     {
         // Get the player's position
@@ -76,6 +98,42 @@ public class MinimapController : MonoBehaviour
 
         // Update the player icon's position
         playerIcon.anchoredPosition = minimapPosition;
+
+        Vector3 moveDir = playerController.moveDirection;
+
+        float forwardDot = Vector3.Dot(moveDir, transform.forward);
+        float rightDot = Vector3.Dot(moveDir, transform.right);
+        float backwardDot = Vector3.Dot(moveDir, -transform.forward);
+        float leftDot = Vector3.Dot(moveDir, -transform.right);
+
+        //Correct icon's rotation
+        // Determine the direction
+        if (forwardDot > 0.7f)
+        {
+            //Quaternion targetRotation = Quaternion.Euler(0, 0, targetRotationZ);
+            //playerIcon.rotation = targetRotation;
+
+            Debug.Log("Moving Forward");
+        }
+        else if (backwardDot > 0.7f)
+        {
+            playerIcon.Rotate(0, 0, -moveDir.magnitude);
+            Debug.Log("Moving Backward");
+        }
+        else if (rightDot > 0.7f)
+        {
+            playerIcon.Rotate(0, 0, moveDir.magnitude);
+            Debug.Log("Moving Right");
+        }
+        else if (leftDot > 0.7f)
+        {
+            playerIcon.Rotate(0, 0, -moveDir.magnitude);
+            Debug.Log("Moving Left");
+        }
+        
+
+        //na direção do x o x é positivo, se for direção contrária, x é negativo
+        //na direção do z o z é positivo, se for direção contrária, z é negativo
     }
 
     private void MoveSelector()

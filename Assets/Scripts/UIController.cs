@@ -34,7 +34,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && isPaused == false)
         {
             OnPause();
         }
@@ -106,7 +106,7 @@ public class UIController : MonoBehaviour
         pauseMenu.SetActive(check1);
         hud.SetActive(!check1);
 
-        Cursor.visible = false;
+        Cursor.visible = isPaused;
     }
     void loadScene(string newScene)
     {
