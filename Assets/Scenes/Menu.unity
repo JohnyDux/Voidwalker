@@ -5685,16 +5685,6 @@ MonoBehaviour:
   - {fileID: 1606785077}
   - {fileID: 1618818150}
   - {fileID: 1290023064}
-  inputActions: {fileID: -944628639613478452, guid: c609616f6dc8cbc4db41af35eab81d7a, type: 3}
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 304a3b1e-1fd0-48ec-92d5-b2194376508c
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!114 &883826457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9036,7 +9026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc7637a610570640bc2c533bad65939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Level1
+  sceneName: LevelElevatorScene
   LoadingScreen: {fileID: 1631323504}
   image: {fileID: 337238992}
   LoadingImages:

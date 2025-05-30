@@ -195,8 +195,6 @@ public class UIController : MonoBehaviour
 
     void changeWeapon()
     {
-        weaponActive = true;
-
         if (weaponIndex < weaponUISprites.Count-1)
         {
             weaponIndex++;
@@ -219,7 +217,7 @@ public class UIController : MonoBehaviour
                 weaponAiming = true;
                 CrosshairGO.SetActive(true);
             }
-            else
+            else if(weaponAiming == true)
             {
                 weaponAiming = false;
                 CrosshairGO.SetActive(false);

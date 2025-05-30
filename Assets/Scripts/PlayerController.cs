@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,10 +15,15 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     public Vector3 moveDirection = Vector3.zero;
 
+    public CinemachineVirtualCamera mainCamera;
     public int bulletCount;
     public GameObject prefabShooting;
-    public RectTransform uICrosshair;
+    public RectTransform uICrosshairRect;
+    public GameObject uICrosshairGO;
     public UIController uIController;
+    public CinemachineVirtualCamera aimingCamera;
+    public Transform aimPointer;
+    public Transform playerObj;
 
     void Start()
     {
@@ -90,6 +96,15 @@ public class PlayerController : MonoBehaviour
         {
             ShootAtTarget();
         }
+
+        if (uIController.weaponAiming == true)
+        {
+            PointAtTarget(true);
+        }
+        else if (uIController.weaponAiming == false)
+        {
+            PointAtTarget(false);
+        }
     }
 
     void ShootAtTarget()
@@ -98,10 +113,10 @@ public class PlayerController : MonoBehaviour
         {
             // Get the world position of the UI element
             Vector3 worldPosition;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(uICrosshair, uICrosshair.position, Camera.main, out worldPosition);
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(uICrosshairRect, uICrosshairRect.position, Camera.main, out worldPosition);
 
             // Create a ray from the camera to the world position
-            Ray ray = Camera.main.ScreenPointToRay(uICrosshair.position);
+            Ray ray = Camera.main.ScreenPointToRay(uICrosshairRect.position);
             RaycastHit hit;
 
             // Perform the raycast
@@ -117,5 +132,29 @@ public class PlayerController : MonoBehaviour
                 Destroy(instantiatedPrefab, 5);
             }
         }
+    }
+
+    void PointAtTarget(bool aiming)
+    {
+        if(aiming == true)
+        {
+            //activate crosshair
+            uICrosshairGO.SetActive(true);
+            //adjust camera
+            aimingCamera.Priority = 10; // Set priority for camera 1
+            mainCamera.Priority = 0;  // Set priority for camera 2
+            //activate point character animation
+        }
+        else if(aiming == false)
+        {
+            //deactivate crosshair
+            uICrosshairGO.SetActive(false);
+            //adjust camera
+            aimingCamera.Priority = 0; // Set priority for camera 1
+            mainCamera.Priority = 10;  // Set priority for camera 2
+            //deactivate point character animation
+        }
+
+
     }
 }
