@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public Transform aimPointer;
     public Transform playerObj;
 
+    public Animator playerAnim;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
@@ -68,6 +70,11 @@ public class PlayerController : MonoBehaviour
             if (moveDirection.magnitude > 0.1f)
             {
                 moveDirection = moveDirection.normalized * moveSpeed;
+                playerAnim.SetBool("isWalking", true);
+            }
+            else
+            {
+                playerAnim.SetBool("isWalking", false);
             }
 
             // Jump
