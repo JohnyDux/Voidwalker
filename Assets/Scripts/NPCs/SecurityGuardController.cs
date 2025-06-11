@@ -9,6 +9,7 @@ public class SecurityGuardController : MonoBehaviour
     public int health;
 
     [Header("AI Logic")]
+    //MOVEMENT
     public NavMeshAgent agent; // Reference to the NavMeshAgent
     public Transform[] waypoints; // Array of points to move to
     bool canMove;
@@ -18,18 +19,29 @@ public class SecurityGuardController : MonoBehaviour
 
     public Animator SecurityGuardAnimator;
 
+    //SHOOTING
+    GameObject target;
+    public bool shoot;
+
     private void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Player");
+
         currentWaypointIndex = 0;
         canMove = true;
-        StartCoroutine(MoveToWaypoints());
     }
 
     void Update()
     {
-        if (waypoints.Length > 0)
+        Shoot();
+
+        if (waypoints.Length > 0 && canMove == true)
         {
             StartCoroutine(MoveToWaypoints());
+        }
+        else
+        {
+            StopCoroutine(MoveToWaypoints());
         }
 
         Die();
@@ -37,9 +49,7 @@ public class SecurityGuardController : MonoBehaviour
    
     private IEnumerator MoveToWaypoints()
     {
-        if (canMove)
-        {
-            while (true)
+        while (true)
             {
                 // Set the destination to the current waypoint
                 agent.SetDestination(waypoints[currentWaypointIndex].position);
@@ -61,7 +71,6 @@ public class SecurityGuardController : MonoBehaviour
                     currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; // Loop back to the first waypoint
                 }
             }
-        }
     }
 
     void Die()
@@ -70,6 +79,38 @@ public class SecurityGuardController : MonoBehaviour
         {
             agent.speed = 0;
             SecurityGuardAnimator.SetBool("Dead", true);
+        }
+    }
+
+    void Shoot()
+    {
+        if (shoot == true)
+        {
+            //stop moving
+            canMove = false;
+            agent.speed = 0;
+
+            SecurityGuardAnimator.SetBool("PlayerDetected", true);
+
+            //pull weapon
+            SecurityGuardAnimator.SetBool("PlayerInRange", true);
+
+            //attack
+            SecurityGuardAnimator.SetBool("Attack", true);
+        }
+        else if(shoot == false)
+        {
+            //stop attack
+            SecurityGuardAnimator.SetBool("Attack", false);
+
+            //holster weapon
+            SecurityGuardAnimator.SetBool("PlayerInRange", false);
+
+            SecurityGuardAnimator.SetBool("PlayerDetected", false);
+
+            //start moving
+            canMove = true;
+            agent.speed = 3.5f;
         }
     }
 }
