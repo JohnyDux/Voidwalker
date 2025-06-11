@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46488ba16f943ba4292a8b86195b4c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   agent: {fileID: 1115183433}
   waypoints:
   - {fileID: 209601789}

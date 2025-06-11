@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class SecurityGuardController : MonoBehaviour
 {
+    [Header("Attributes")]
+    public int health;
+
+    [Header("AI Logic")]
     public NavMeshAgent agent; // Reference to the NavMeshAgent
     public Transform[] waypoints; // Array of points to move to
     bool canMove;
@@ -27,6 +31,8 @@ public class SecurityGuardController : MonoBehaviour
         {
             StartCoroutine(MoveToWaypoints());
         }
+
+        Die();
     }
    
     private IEnumerator MoveToWaypoints()
@@ -55,6 +61,15 @@ public class SecurityGuardController : MonoBehaviour
                     currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; // Loop back to the first waypoint
                 }
             }
+        }
+    }
+
+    void Die()
+    {
+        if(health <= 0)
+        {
+            agent.speed = 0;
+            SecurityGuardAnimator.SetBool("Dead", true);
         }
     }
 }
