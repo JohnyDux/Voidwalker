@@ -13,15 +13,33 @@ public class SecurityGuardController : MonoBehaviour
     public NavMeshAgent agent; // Reference to the NavMeshAgent
     public Transform[] waypoints; // Array of points to move to
     bool canMove;
-    public float walkWaitTime = 2f; // Time to wait at each waypoint
-
-    public int currentWaypointIndex; // Index of the current waypoint
-
+    int currentWaypointIndex;
     public Animator SecurityGuardAnimator;
 
     //SHOOTING
     GameObject target;
     public bool shoot;
+
+    //VISION CONE
+    public float viewRadius = 5f;
+    [Range(0, 360)] public float viewAngle = 90f;
+    public float heightOffset = 0.5f;
+    public float detectionRefreshRate = 0.2f;
+
+    public Transform coneParent;
+
+    public LayerMask targetMask;
+    public LayerMask obstacleMask;
+
+    public bool showVisionCone = true;
+    public Color detectionColor = Color.red;
+    public Color noDetectionColor = Color.yellow;
+    public Color searchColor = Color.magenta;
+    [Range(3, 60)] public int coneResolution = 20;
+
+    //TARGET
+    private Transform currentTarget;
+    private Vector3 lastKnownPosition;
 
     private void Start()
     {
@@ -46,40 +64,23 @@ public class SecurityGuardController : MonoBehaviour
 
         Die();
     }
-   
+
     private IEnumerator MoveToWaypoints()
     {
         while (true)
+        {
             {
                 // Set the destination to the current waypoint
                 agent.SetDestination(waypoints[currentWaypointIndex].position);
-
-                // Wait until the agent reaches the destination
-                if (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
-                {
-                    SecurityGuardAnimator.SetBool("Walking", true);
-                    yield return null; // Wait for the next frame
-                }
-                else
-                {
-                    SecurityGuardAnimator.SetBool("Walking", false);
-
-                    // Wait for the specified time at the waypoint
-                    yield return new WaitForSeconds(walkWaitTime);
-
-                    // Move to the next waypoint
-                    currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; // Loop back to the first waypoint
-                }
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; // Loop back to the first waypoint
             }
+        }
     }
 
     void Die()
     {
-        if(health <= 0)
-        {
-            agent.speed = 0;
-            SecurityGuardAnimator.SetBool("Dead", true);
-        }
+        canMove = false;
+        SecurityGuardAnimator.SetBool("Dead", true);
     }
 
     void Shoot()
@@ -98,7 +99,7 @@ public class SecurityGuardController : MonoBehaviour
             //attack
             SecurityGuardAnimator.SetBool("Attack", true);
         }
-        else if(shoot == false)
+        else if (shoot == false)
         {
             //stop attack
             SecurityGuardAnimator.SetBool("Attack", false);
@@ -111,6 +112,43 @@ public class SecurityGuardController : MonoBehaviour
             //start moving
             canMove = true;
             agent.speed = 3.5f;
+        }
+    }
+
+    void FindVisibleTargets()
+    {
+        // Use the cone parent's position for detection
+        Vector3 detectionOrigin = coneParent.position + Vector3.up * heightOffset;
+
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(detectionOrigin, viewRadius, targetMask);
+
+        foreach (Collider targetCollider in targetsInViewRadius)
+        {
+            Transform target = targetCollider.transform;
+            Vector3 dirToTarget = (target.position - detectionOrigin).normalized;
+
+            // Use the cone parent's forward direction for angle calculation
+            if (Vector3.Angle(coneParent.forward, dirToTarget) < viewAngle / 2)
+            {
+                float dstToTarget = Vector3.Distance(detectionOrigin, target.position);
+                canMove = false;
+                if (!Physics.Raycast(detectionOrigin, dirToTarget, dstToTarget, obstacleMask))
+                {
+                    currentTarget = target;
+                    lastKnownPosition = target.position;
+                    agent.SetDestination(lastKnownPosition);
+                    return;
+                }
+            }
+        }
+
+        if (currentTarget != null)
+        {
+            currentTarget = null;
+        }
+        else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            canMove = true;
         }
     }
 }

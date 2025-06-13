@@ -37,6 +37,7 @@ public class UIController : MonoBehaviour
 
     public PlayerStats player;
     public GameObject deathScreen;
+    public float waitTime;
 
     private void Awake()
     {
@@ -167,8 +168,12 @@ public class UIController : MonoBehaviour
 
         if(player.lifeValue <= 0)
         {
-            deathScreen.SetActive(true);
-            Time.timeScale = 0f;
+            waitTime -= Time.deltaTime;
+            if(waitTime <= 0)
+            {
+                deathScreen.SetActive(true);
+                Time.timeScale = 0f;
+            } 
         }
     }
 
