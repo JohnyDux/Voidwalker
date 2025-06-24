@@ -5,245 +5,345 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Input")]
-    public float horizontal;
-    public float vertical;
+    [Header("Movement Settings")]
+    [SerializeField]float horizontal;
+    [SerializeField]float vertical;
+    [SerializeField] private float speed;
+    [SerializeField] private float walk;
+    [SerializeField] private float run;
+    [SerializeField] private float crouch;
+    public bool isMoving, isCrouching, isRunning;
+    private float X, Y;
 
-    [Header("Camera")]
-    Vector3 cameraForward;
-    Vector3 cameraRight;
+    [Header("Jump/Gravity Settings")]
+    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float groundCheckDistance = 0.4f;
+    [SerializeField] private LayerMask groundMask;
+    private Vector3 velocity;
+    [SerializeField] private bool isGrounded;
 
-    [Header("Ground Movement")]
-    public float moveSpeed = 6.0f;
-    bool isRunning;
-    public float jumpSpeed = 8.0f;
-    public float flightSpeed = 5f;
-    public float gravity = 20.0f;
-    public Transform cameraTransform; // Assign your main camera in the Inspector
-    public Transform characterMesh; // Assign the character's mesh/model in the Inspector
-    public float rotationSpeed = 10.0f; // Speed at which the character rotates
+    [Header("Flight Settings")]
+    [SerializeField] private float flySpeed = 10f;
+    [SerializeField] private KeyCode flyKey = KeyCode.V;
+    [SerializeField] private KeyCode goUpKey = KeyCode.R;
+    [SerializeField] private KeyCode goDownKey = KeyCode.F;
+    public float ascendSpeed = 2f;
+    public float descendSpeed = 2f;
+    public float flyHeight;
+    private bool isFlying = false;
+    [SerializeField] private GameObject[] particleFire;
+    [SerializeField] private float turnSpeed;
+
+    [Header("Life Settings")]
+    public PlayerStats stats;
+    private bool isAlive = true;
+
+    [Header("Weapons")]
+    public bool pistolActive;
+    public bool shotgunActive;
+
+    public UIController uiRef;
+
     public CharacterController controller;
-    public Vector3 moveDirection = Vector3.zero;
+    public Transform groundCheck;
 
-    [Header("Jetpack Movement")]
-    public float flightHeight;
-    
+    public CinemachineFreeLook virtualCamera; // Reference to the Cinemachine Virtual Camera
+    float turnSmoothVelocity;
+    public float turnSmoothTime = 0.1f;
 
-    [Header("Shooting")]
-    public CinemachineVirtualCamera mainCamera;
-    public int bulletCount;
-    public GameObject prefabShooting;
-    public RectTransform uICrosshairRect;
-    public GameObject uICrosshairGO;
-    public UIController uIController;
-    public CinemachineVirtualCamera aimingCamera;
-    public Transform aimPointer;
-    public Transform playerObj;
 
-    [Header("Extras")]
-    public Animator playerAnim;
-    public PlayerStats playerStats;
-    void Start()
+    public Animator animator;
+
+    private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
+        // Create ground check object
+        GameObject check = new GameObject("GroundCheck");
+        check.transform.SetParent(transform);
+        check.transform.localPosition = Vector3.zero;
+        groundCheck = check.transform;
 
-        if (cameraTransform == null)
+        //Disable fire
+        foreach (GameObject i in particleFire)
         {
-            Debug.LogError("Camera transform not assigned! Please assign the main camera in the Inspector.");
-            enabled = false; // Disable the script if no camera is assigned.
-        }
-        if (characterMesh == null)
-        {
-            Debug.LogError("Character mesh not assigned! Please assign the character's mesh in the Inspector.");
-            enabled = false;
+            i.SetActive(false);
         }
     }
 
-    void Update()
+
+    private void Update()
     {
-        if(playerStats.lifeValue<=0){
-            playerAnim.SetBool("Die", true);
-        }
+        if (!isAlive) return;
 
-        // Get input from WASD
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        HandleGroundCheck();
+        HandleMovement();
+        HandleJump();
+        HandleCrouch();
+        HandleFlightToggle();
+        HandleFlight();
+        HandleHacking();
 
-        // Get the camera's forward vector (remove Y component for horizontal movement)
-        cameraForward = cameraTransform.forward;
-        cameraForward.y = 0;
-        cameraForward = cameraForward.normalized;
-
-        // Get the camera's right vector (remove Y component for horizontal movement)
-        cameraRight = cameraTransform.right;
-        cameraRight.y = 0;
-        cameraRight = cameraRight.normalized;
-
-        // Calculate movement direction based on camera's orientation
-        moveDirection = (cameraForward * vertical + cameraRight * horizontal);
-
-        if (controller.isGrounded)
+        if(uiRef.weaponIndex == 0)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                moveSpeed = 18.0f;
-                isRunning = true;
-            }
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                moveSpeed = 6.0f;
-                isRunning = false;
-            }
-
-            //Only apply speed if there is input
-            if (vertical != 0)
-                {
-                    moveDirection = moveDirection.normalized * moveSpeed;
-
-                    playerAnim.SetBool("moveForward", true);
-
-                    if (isRunning == false)
-                    {
-                        playerAnim.SetFloat("walkRunBlend", 0);
-                    }
-                    else
-                    {
-                        playerAnim.SetFloat("walkRunBlend", 1);
-                    }
-                }
-            else
-                {
-                    playerAnim.SetBool("moveForward", false);
-                }
-
-            // Jump
-            if (Input.GetButton("Jump"))
-            {
-                playerAnim.SetTrigger("Jump");
-
-                moveDirection.y = jumpSpeed;
-            }
-
-            //Crouch
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                moveSpeed = 0f;
-                playerAnim.SetBool("Crouch", true);
-            }
-            else if(Input.GetKeyUp(KeyCode.LeftControl))
-            {
-                moveSpeed = 6.0f;
-                playerAnim.SetBool("Crouch", false);
-            }
-
-            //Fly with Jetpack
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                // Start flying
-                Fly();
-                playerAnim.SetBool("Fly", true);
-            }
-            else if(Input.GetKeyUp(KeyCode.Q))
-            {
-                playerAnim.SetBool("Fly", false);
-            }
-
-            // Rotate the character to face the movement direction
-            if (moveDirection.magnitude > 0.1f) // Only rotate if moving
-            {
-                // Obtém a posição da câmera
-                Vector3 cameraPosition = cameraTransform.position;
-
-                // Define a nova posição do objeto para olhar na direção da câmera
-                Vector3 directionToCamera = cameraPosition - transform.position;
-                directionToCamera.y = 0;
-
-                if(directionToCamera != Vector3.zero)
-                {
-                    // Calcula a rotação necessária
-                    Quaternion targetRotation = Quaternion.LookRotation(-directionToCamera);
-
-                    // Aplica a rotação ao objeto
-                    characterMesh.rotation = Quaternion.Slerp(characterMesh.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                }
-            }
+            HandlePistol();
         }
+        else if(uiRef.weaponIndex == 1)
+        {
+            HandleShotgun();
+        }
+    }
+    private void HandleGroundCheck()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
+
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+    }
+
+    private void HandleMovement()
+    {
+        if (isFlying) return;
+
+        Transform cam = virtualCamera.transform;
+
+        //walk
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        if (direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            animator.SetBool("moveForward", true);
+            animator.SetFloat("walkRunBlend", 0);
+        }
+        else
+        {
+            animator.SetBool("moveForward", false);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = true;
+            animator.SetFloat("walkRunBlend", 1);
+        }
+        else
+        {
+            animator.SetFloat("walkRunBlend", 0);
+        }
+
+        if(isRunning == true)
+        {
+            speed = run;
+        }
+        else
+        {
+            speed = walk;
+        }
+
+        //Crouch
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            HandleCrouch();
+        }
+        //Jump
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            HandleJump();
+        }
+
 
         // Apply gravity
-        moveDirection.y -= gravity * Time.deltaTime;
+        velocity.y -= gravity * Time.deltaTime;
+        
+        controller.Move(velocity * Time.deltaTime);
+    }
 
-        // Move the controller
-        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-         
-        if (Input.GetMouseButtonDown(0))
-        {
-            ShootAtTarget();
-        }
+    private void HandleJump()
+    {
+        if (isFlying) return;
 
-        if (uIController.weaponAiming == true)
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            PointAtTarget(true);
-        }
-        else if (uIController.weaponAiming == false)
-        {
-            PointAtTarget(false);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetTrigger("Jump");
         }
     }
 
-    void ShootAtTarget()
+    private void HandleCrouch()
     {
-        if(uIController.weaponActive == true && bulletCount > 0)
+        if (isFlying) return;
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            // Get the world position of the UI element
-            Vector3 worldPosition;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(uICrosshairRect, uICrosshairRect.position, Camera.main, out worldPosition);
+            isCrouching = true;
+            isRunning = false;
+            speed = 0;
+            animator.SetBool("Crouch", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            isRunning = false;
+            isCrouching = false;
+            speed = walk;
+            animator.SetBool("Crouch", false);
+        } 
+    }
 
-            // Create a ray from the camera to the world position
-            Ray ray = Camera.main.ScreenPointToRay(uICrosshairRect.position);
-            RaycastHit hit;
+    private void HandleFlightToggle()
+    {
+        if (Input.GetKeyDown(flyKey) && isFlying == false)
+        {
+            isFlying = true;
+        }
+        else if (Input.GetKeyUp(flyKey) && isFlying == true)
+        {
+            isFlying = false;
+        }
+        animator.SetBool("Fly", isFlying);
+        foreach (GameObject i in particleFire)
+        {
+            i.SetActive(isFlying);
+        }
+    }
 
-            // Perform the raycast
-            if (Physics.Raycast(ray, out hit))
+    private void HandleFlight()
+    {
+        if (isFlying == true)
+        {
+            gravity = 0;
+
+            // Get the horizontal and vertical input
+            float horizontalInput = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow keys
+            float verticalInput = Input.GetAxis("Vertical"); // W/S or Up/Down arrow keys
+
+            // Calculate the movement direction
+            Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+
+            // Move the character in the direction of the camera
+            transform.position += moveDirection * flySpeed * Time.deltaTime;
+
+            if (Input.GetKey(goUpKey)) // Ascend
             {
-                // Calculate the position in front of the hit point
-                Vector3 spawnPosition = hit.point + hit.normal;
+                transform.Translate(Vector3.up * flyHeight/10);
+            }
+            else if (Input.GetKey(goDownKey)) // Descend
+            {
+                transform.Translate(Vector3.down * flyHeight/10);
+            }
+        }
+        else
+        {
+            gravity = 20;
+        }
+    }
 
-                // Instantiate the prefab at the calculated position with no rotation
-                GameObject instantiatedPrefab = Instantiate(prefabShooting, spawnPosition, Quaternion.identity);
+    public void TakeDamage(float damage)
+    {
+        if (!isAlive) return;
 
-                // Destroy the instantiated prefab after a delay
-                Destroy(instantiatedPrefab, 5);
+        stats.lifeValue -= damage;
+        if (stats.lifeValue <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        isAlive = false;
+        // Add death animation or effects here
+        animator.SetBool("Die", true);
+        Debug.Log("Player has died!");
+    }
+
+    private void HandlePistol()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) && pistolActive == false)
+        {
+            //draw pistol animation
+            pistolActive = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Z) && pistolActive == true)
+        {
+            //draw pistol animation
+            pistolActive = false;
+        }
+        animator.SetBool("DrawPistol", pistolActive);
+
+        if (pistolActive == true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //shoot
+                animator.SetTrigger("Shoot");
+            }
+
+            else if (Input.GetMouseButtonUp(0))
+            {
+                //stop shooting
+                animator.ResetTrigger("Shoot");
             }
         }
     }
 
-    void PointAtTarget(bool aiming)
+    private void HandleShotgun()
     {
-        if(aiming == true)
+        if (Input.GetKeyDown(KeyCode.K) && shotgunActive == false)
         {
-            //activate crosshair
-            uICrosshairGO.SetActive(true);
-            //adjust camera
-            aimingCamera.Priority = 10; // Set priority for camera 1
-            mainCamera.Priority = 0;  // Set priority for camera 2
-            //activate point character animation
+            //draw pistol animation
+            shotgunActive = true;
         }
-        else if(aiming == false)
+        else if (Input.GetKeyDown(KeyCode.K) && shotgunActive == true)
         {
-            //deactivate crosshair
-            uICrosshairGO.SetActive(false);
-            //adjust camera
-            aimingCamera.Priority = 0; // Set priority for camera 1
-            mainCamera.Priority = 10;  // Set priority for camera 2
-            //deactivate point character animation
+            //draw pistol animation
+            shotgunActive = false;
         }
+        animator.SetBool("DrawShotgun", shotgunActive);
 
+        if (shotgunActive == true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //shoot
+                animator.SetTrigger("Shoot");
+            }
 
+            else if (Input.GetMouseButtonUp(0))
+            {
+                //stop shooting
+                animator.ResetTrigger("Shoot");
+            }
+        }
+    }
+    private void HandleHacking()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //find something to hack
+
+            //play the animation
+            animator.SetBool("Hack", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.P))
+        {
+            animator.SetBool("Hack", false);
+        }
     }
 
-    void Fly()
+    private void OnDrawGizmosSelected()
     {
-        
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckDistance);
+        }
     }
 }

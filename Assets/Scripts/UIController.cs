@@ -33,8 +33,6 @@ public class UIController : MonoBehaviour
     public GameObject CrosshairGO;
     public Image crosshairImage;
 
-    public CinemachineVirtualCamera virtualCamera;
-
     public PlayerStats player;
     public GameObject deathScreen;
     public float waitTime;
@@ -135,7 +133,7 @@ public class UIController : MonoBehaviour
             aimWeapon();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             if (weaponActive)
             {

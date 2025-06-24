@@ -1,42 +1,89 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
 public class ElevatorSceneManager : MonoBehaviour
 {
+    bool playerInTrigger;
+
     [Header("Scene Names")]
     public string elevatorScene = "LevelElevator";
-    public string level1Scene = "Level1";
-    public string level2Scene = "Level2";
-    public string level3Scene = "Level3";
+    string[] levelSceneNames = { "Level1", "Level2", "Level3" };
 
     private string currentLoadedLevel = "";
     private bool isLoading = false;
 
-    private void Awake()
+    [SerializeField] GameObject levelsBoard;
+    [SerializeField] GameObject loadingScreen;
+    [SerializeField] int selectedFloorIndex;
+    public RectTransform selector;
+    public Image selectorImage;
+
+    private void Start()
     {
-        // Ensure this object persists between scene loads
-        DontDestroyOnLoad(gameObject);
+        levelsBoard.SetActive(false);
     }
 
     private void Update()
     {
         if (isLoading) return;
 
-        // Check for number key presses
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (playerInTrigger)
         {
-            ToggleLevel(level1Scene);
+            levelsBoard.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                ChooseFloor();
+            }
+
+            // Check for number key presses
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                ToggleLevel(levelSceneNames[selectedFloorIndex]);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else
         {
-            ToggleLevel(level2Scene);
+            levelsBoard.SetActive(false);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ToggleLevel(level3Scene);
-        }
+    }
+
+    public void ChooseFloor()
+    {
+        Debug.Log("Chosse Floor");
+
+         selectorImage.color = Color.black;
+         
+         if (selectedFloorIndex < 2)
+         {
+             selectedFloorIndex++;
+         }
+         else
+         {
+             selectedFloorIndex = 0;
+         }
+         
+         if (selectedFloorIndex == 0)
+         {
+             // Change the top and bottom properties
+             selector.offsetMin = new Vector2(selector.offsetMin.x, 139); //bottom
+             selector.offsetMax = new Vector2(selector.offsetMax.x, -2); //-top
+         }
+         else if (selectedFloorIndex == 1)
+         {
+             // Change the top and bottom properties
+             selector.offsetMin = new Vector2(selector.offsetMin.x, 75); //bottom
+             selector.offsetMax = new Vector2(selector.offsetMax.x, -65); //-top
+         }
+         else if (selectedFloorIndex == 2)
+         {
+             // Change the top and bottom properties
+             selector.offsetMin = new Vector2(selector.offsetMin.x, 9); //bottom
+             selector.offsetMax = new Vector2(selector.offsetMax.x, -131); //-top
+         }
     }
 
     private void ToggleLevel(string level)
@@ -95,8 +142,19 @@ public class ElevatorSceneManager : MonoBehaviour
         Debug.Log("Level unloaded");
     }
 
-    // For UI buttons if needed
-    public void ButtonLoadLevel1() => ToggleLevel(level1Scene);
-    public void ButtonLoadLevel2() => ToggleLevel(level2Scene);
-    public void ButtonLoadLevel3() => ToggleLevel(level3Scene);
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInTrigger = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInTrigger = false;
+        }
+    }
 }

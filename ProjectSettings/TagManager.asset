@@ -9,6 +9,8 @@ TagManager:
   - Ground
   - Ball
   - Enemy Target
+  - RouletteBall
+  - RouletteStateTag
   layers:
   - Default
   - TransparentFX
